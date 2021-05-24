@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +22,14 @@ public class JobPositionsController {
 		super();
 		this.jobPositionService = jobPositionService;
 	}
+
+	@PostMapping("/add")
+	public void add(@RequestBody JobPosition jobPosition) {
+		this.jobPositionService.add(jobPosition);
+	}
+
 	@GetMapping("/getall")
-	public List<JobPosition> getAll(){
+	public List<JobPosition> getAll() {
 		return this.jobPositionService.getAll();
 	}
 

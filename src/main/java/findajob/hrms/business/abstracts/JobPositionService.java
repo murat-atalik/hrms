@@ -5,6 +5,8 @@ import java.util.List;
 import findajob.hrms.entities.concretes.JobPosition;
 
 public interface JobPositionService {
+
+	void add(JobPosition jobPosition);
 	List<JobPosition> getAll();
 
 }
