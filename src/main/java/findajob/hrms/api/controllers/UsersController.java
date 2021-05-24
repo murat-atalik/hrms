@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import findajob.hrms.business.abstracts.UserService;
-
+import findajob.hrms.core.utilities.DataResult;
+import findajob.hrms.core.utilities.Result;
 import findajob.hrms.entities.concretes.User;
 
 @RestController
@@ -25,12 +26,12 @@ public class UsersController {
 	}
 
 	@PostMapping("/add")
-	public void add(@RequestBody User user) {
-		this.userService.add(user);
+	public Result add(@RequestBody User user) {
+		return this.userService.add(user);
 	}
 
 	@GetMapping("/getall")
-	public List<User> getall() {
+	public DataResult<List<User>> getall() {
 		return this.userService.getAll();
 	}
 

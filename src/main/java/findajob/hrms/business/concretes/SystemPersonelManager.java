@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.SystemPersonelService;
+import findajob.hrms.core.utilities.DataResult;
+import findajob.hrms.core.utilities.Result;
+import findajob.hrms.core.utilities.SuccessDataResult;
+import findajob.hrms.core.utilities.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.SystemPersonelDao;
 import findajob.hrms.entities.concretes.SystemPersonel;
 @Service
@@ -19,15 +23,15 @@ public class SystemPersonelManager implements SystemPersonelService {
 	}
 	
 	@Override
-	public void add(SystemPersonel systemPersonel) {
+	public Result add(SystemPersonel systemPersonel) {
 		this.systemPersonelDao.save(systemPersonel);
-		
+		return new SuccessResult("System personel addedd");
 	}
 
 	@Override
-	public List<SystemPersonel> getAll() {
+	public DataResult<List<SystemPersonel>> getAll() {
 		// TODO Auto-generated method stub
-		return this.systemPersonelDao.findAll();
+		return new SuccessDataResult<List<SystemPersonel>>(this.systemPersonelDao.findAll(),"System personel listed");
 	}
 
 }
