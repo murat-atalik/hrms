@@ -77,7 +77,7 @@ public class JobSeekerManager implements JobSeekerService {
 	private boolean findByEmail(String email) {
 		return this.jobSeekerDao.existsJobSeekerByEmail(email);
 	}
-
+	//Fake email verification
 	private boolean emailVerification(String email) {
 		String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
 
