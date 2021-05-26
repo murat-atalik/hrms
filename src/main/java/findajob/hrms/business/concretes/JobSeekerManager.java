@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.JobSeekerService;
+import findajob.hrms.core.Business.BusinessRules;
 import findajob.hrms.core.adapters.FakeCheck;
 import findajob.hrms.core.adapters.MernisServiceAdapter;
 import findajob.hrms.core.adapters.UserCheckService;
@@ -36,22 +37,35 @@ public class JobSeekerManager implements JobSeekerService {
 	// TODO: Refactor this code block
 	@Override
 	public Result add(JobSeeker jobSeeker) {
-		if (!findByNationalityId(jobSeeker.getNationalityId()).isSuccess()) {
-			return findByNationalityId(jobSeeker.getNationalityId());
-		} else if (!findByEmail(jobSeeker.getEmail()).isSuccess()) {
-			return findByEmail(jobSeeker.getEmail());
-		} else if (!this.JobSeekerCheck(jobSeeker).isSuccess()) {
-			return this.JobSeekerCheck(jobSeeker);
-		} else if (!this.PasswordCheck(jobSeeker).isSuccess()) {
-			return this.PasswordCheck(jobSeeker);
-		} else if (this.userCheckService.CheckIfRealPerson(jobSeeker.getNationalityId(), jobSeeker.getFirstName(),
-				jobSeeker.getLastName(), jobSeeker.getBirthday()).isSuccess()) {
-			return new ErrorResult("Invalid User");
-		} else if (!emailVerification(jobSeeker.getEmail()).isSuccess()) {
-			return emailVerification(jobSeeker.getEmail());
+
+		// this code block changes after learn
+		/*
+		 * if (!findByNationalityId(jobSeeker.getNationalityId()).isSuccess()) { return
+		 * findByNationalityId(jobSeeker.getNationalityId()); } else if
+		 * (!findByEmail(jobSeeker.getEmail()).isSuccess()) { return
+		 * findByEmail(jobSeeker.getEmail()); } else if
+		 * (!this.JobSeekerCheck(jobSeeker).isSuccess()) { return
+		 * this.JobSeekerCheck(jobSeeker); } else if
+		 * (!this.PasswordCheck(jobSeeker).isSuccess()) { return
+		 * this.PasswordCheck(jobSeeker); } else if
+		 * (this.userCheckService.CheckIfRealPerson(jobSeeker.getNationalityId(),
+		 * jobSeeker.getFirstName(), jobSeeker.getLastName(),
+		 * jobSeeker.getBirthday()).isSuccess()) { return new
+		 * ErrorResult("Invalid User"); } else if
+		 * (!emailVerification(jobSeeker.getEmail()).isSuccess()) { return
+		 * emailVerification(jobSeeker.getEmail()); }
+		 */
+		Result error = BusinessRules
+				.Run(findByNationalityId(jobSeeker.getNationalityId()), findByEmail(jobSeeker.getEmail()),
+						this.JobSeekerCheck(jobSeeker), this.PasswordCheck(jobSeeker),
+						this.userCheckService.CheckIfRealPerson(jobSeeker.getNationalityId(), jobSeeker.getFirstName(),
+								jobSeeker.getLastName(), jobSeeker.getBirthday()),
+						emailVerification(jobSeeker.getEmail()));
+		if(error.isSuccess()) {
+			this.jobSeekerDao.save(jobSeeker);
+			return new SuccessResult("JobSeeker added");
 		}
-		this.jobSeekerDao.save(jobSeeker);
-		return new SuccessResult("JobSeeker added");
+		return error;
 	}
 
 	@Override
@@ -72,7 +86,7 @@ public class JobSeekerManager implements JobSeekerService {
 
 	private Result findByNationalityId(String nationalityId) {
 		if (this.jobSeekerDao.existsJobSeekerByNationalityId(nationalityId)) {
-			return new ErrorResult("Invalid nationality number");
+			return new ErrorResult("NationalityId already exists");
 		}
 		return new SuccessResult();
 	}

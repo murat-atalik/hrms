@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.EmployerService;
+import findajob.hrms.core.Business.BusinessRules;
 import findajob.hrms.core.utilities.DataResult;
 import findajob.hrms.core.utilities.ErrorResult;
 import findajob.hrms.core.utilities.Result;
@@ -29,16 +30,14 @@ public class EmployerManager implements EmployerService {
 	@Override
 	public Result add(Employer employer) {
 
-		if (!EmailVerification(employer.getEmail()).isSuccess()) {
-			return EmailVerification(employer.getEmail());
-		} else if (!EmployerCheck(employer).isSuccess()) {
-			return EmployerCheck(employer);
-		} else if (!EmailCheck(employer.getEmail()).isSuccess()) {
-			return EmailCheck(employer.getEmail());
-		}
+		
+		Result error = BusinessRules.Run(EmailVerification(employer.getEmail()),EmployerCheck(employer),EmailCheck(employer.getEmail()));
 		employer.setSystemVerification(false);
+		
+		if(error.isSuccess()) {
 		this.employerDao.save(employer);
-		return new SuccessResult("Employer added/ need SystemPersonel verification");
+		return new SuccessResult("Employer added/ need SystemPersonel verification");}
+		return error;
 	}
 
 	@Override
