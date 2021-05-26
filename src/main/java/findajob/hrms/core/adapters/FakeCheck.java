@@ -4,13 +4,15 @@ import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
-import findajob.hrms.business.abstracts.UserCheckService;
+import findajob.hrms.core.utilities.ErrorResult;
+import findajob.hrms.core.utilities.Result;
+import findajob.hrms.core.utilities.SuccessResult;
 
 @Component
 public class FakeCheck implements UserCheckService {
 
 	@Override
-	public boolean CheckIfRealPerson(String nationalityId, String firstName, String lastName, Date dateOfBirthYear) {
+	public Result CheckIfRealPerson(String nationalityId, String firstName, String lastName, Date dateOfBirthYear) {
 		String tckn = nationalityId;
         boolean isValid = false;
         if (tckn != null && tckn.length() == 11 && isInt(tckn)) {
@@ -40,7 +42,10 @@ public class FakeCheck implements UserCheckService {
             control2 = ((10 - (((((n2 + n4 + n6 + n8) + control1) * 3) + (n1 + n3 + n5 + n7 + n9)) % 10)) % 10);
             isValid = ((bTcNo * 100) + (control1 * 10) + control2 == tcNo);
         }
-        return isValid;
+        if(isValid) {
+        	return new SuccessResult();
+        }
+        return new ErrorResult("Invalid nationalityId");
     }
 
     private static boolean isInt(String s)  // assuming integer is in decimal number system

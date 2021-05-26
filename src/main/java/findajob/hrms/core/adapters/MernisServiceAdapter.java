@@ -5,7 +5,9 @@ import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
-import findajob.hrms.business.abstracts.UserCheckService;
+import findajob.hrms.core.utilities.ErrorResult;
+import findajob.hrms.core.utilities.Result;
+import findajob.hrms.core.utilities.SuccessResult;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoap;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
 
@@ -13,7 +15,7 @@ import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
 public class MernisServiceAdapter implements UserCheckService {
 
 	@Override
-	public boolean CheckIfRealPerson(String nationalityId, String firstName, String lastName, Date dateOfBirthYear) {
+	public Result CheckIfRealPerson(String nationalityId, String firstName, String lastName, Date dateOfBirthYear) {
 		KPSPublicSoap soapClient = new KPSPublicSoapProxy();
 		boolean check = false;
 		
@@ -23,8 +25,11 @@ public class MernisServiceAdapter implements UserCheckService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+		if(check) {
+			return new SuccessResult();
+		}
 		
-		return check;
+		return new ErrorResult("Invalid nationalityId");
 	}
 
 

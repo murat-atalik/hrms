@@ -25,21 +25,20 @@ public class EmployerManager implements EmployerService {
 		this.employerDao = employerDao;
 	}
 
+	// TODO: Refactor this code block
 	@Override
 	public Result add(Employer employer) {
 
-		if (!EmailVerification(employer.getEmail())) {
-			return new ErrorResult("Email error");
-		} else if (EmployerCheck(employer)) {
-			return new ErrorResult("All inputs required");
-		} else if (!EmailCheck(employer.getEmail())) {
-
-			employer.setSystemVerification(false);
-			this.employerDao.save(employer);
-			return new SuccessResult("Employer added/ need SystemPersonel verification");
+		if (!EmailVerification(employer.getEmail()).isSuccess()) {
+			return EmailVerification(employer.getEmail());
+		} else if (!EmployerCheck(employer).isSuccess()) {
+			return EmployerCheck(employer);
+		} else if (!EmailCheck(employer.getEmail()).isSuccess()) {
+			return EmailCheck(employer.getEmail());
 		}
-		return new ErrorResult("Employer already exists");
-
+		employer.setSystemVerification(false);
+		this.employerDao.save(employer);
+		return new SuccessResult("Employer added/ need SystemPersonel verification");
 	}
 
 	@Override
@@ -48,26 +47,34 @@ public class EmployerManager implements EmployerService {
 		return new SuccessDataResult<List<Employer>>(this.employerDao.findAll(), "Employer Listed");
 	}
 
-	private boolean EmployerCheck(Employer employer) {
+	private Result EmployerCheck(Employer employer) {
 		String[] parts = employer.getEmail().strip().split("@");
 		String domain = parts[1];
 		if (employer.getCompanyName().strip().isEmpty() || employer.getEmail().strip().isEmpty()
 				|| employer.getPassword().strip().isEmpty() || employer.getPhoneNumber().strip().isEmpty()
 				|| employer.getWebAddress().strip().isEmpty() || !domain.equals(employer.getWebAddress())) {
-			return true;
+			return new SuccessResult();
 		}
-		return false;
+		return new ErrorResult("All fields required");
 	}
 
-	private boolean EmailVerification(String email) {
+	// Fake email verification
+	private Result EmailVerification(String email) {
 		String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
+		if (matcher.matches()) {
+			return new SuccessResult();
+		}
+		return new ErrorResult("Email verification error");
 	}
 
-	private boolean EmailCheck(String email) {
-		return this.employerDao.existsEmployerByEmail(email);
+	private Result EmailCheck(String email) {
+
+		if (!this.employerDao.existsEmployerByEmail(email)) {
+			return new SuccessResult();
+		}
+		return new ErrorResult("Invalid email");
 	}
 
 }
