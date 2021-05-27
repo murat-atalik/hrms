@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name="job_seekers")
+@Table(name="candidates")
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobSeeker  extends User {
+public class Candidate  extends User {
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY )
 	@Column(name="id")

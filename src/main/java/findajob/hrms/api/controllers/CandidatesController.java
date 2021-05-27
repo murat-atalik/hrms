@@ -9,29 +9,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import findajob.hrms.business.abstracts.JobSeekerService;
+import findajob.hrms.business.abstracts.CandidateService;
 import findajob.hrms.core.utilities.DataResult;
 import findajob.hrms.core.utilities.Result;
-import findajob.hrms.entities.concretes.JobSeeker;
+import findajob.hrms.entities.concretes.Candidate;
 
 @RestController
-@RequestMapping("api/jobseekers")
-public class JobSeekersController {
-	private JobSeekerService jobSeekerService;
+@RequestMapping("api/candidates")
+public class CandidatesController {
+	private CandidateService candidateService;
 
 	@Autowired
-	public JobSeekersController(JobSeekerService jobSeekerService) {
-		this.jobSeekerService = jobSeekerService;
+	public CandidatesController(CandidateService candidateService) {
+		this.candidateService = candidateService;
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody JobSeeker jobSeeker  ) {
-		return this.jobSeekerService.add(jobSeeker);
+	public Result add(@RequestBody Candidate candidate  ) {
+		return this.candidateService.add(candidate);
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<JobSeeker>> getAll() {
-		return this.jobSeekerService.getAll();
+	public DataResult<List<Candidate>> getAll() {
+		return this.candidateService.getAll();
 	}
 
 }

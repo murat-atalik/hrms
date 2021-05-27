@@ -4,10 +4,10 @@ import java.util.List;
 
 import findajob.hrms.core.utilities.DataResult;
 import findajob.hrms.core.utilities.Result;
-import findajob.hrms.entities.concretes.JobSeeker;
+import findajob.hrms.entities.concretes.Candidate;
 
-public interface JobSeekerService {
-	Result add(JobSeeker jobSeeker);
-	DataResult<List<JobSeeker>> getAll();
+public interface CandidateService {
+	Result add(Candidate candidate);
+	DataResult<List<Candidate>> getAll();
 
 }

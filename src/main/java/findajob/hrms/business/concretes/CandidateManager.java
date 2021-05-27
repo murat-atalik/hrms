@@ -9,7 +9,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
-import findajob.hrms.business.abstracts.JobSeekerService;
+import findajob.hrms.business.abstracts.CandidateService;
 import findajob.hrms.core.Business.BusinessRules;
 import findajob.hrms.core.adapters.FakeCheck;
 import findajob.hrms.core.adapters.MernisServiceAdapter;
@@ -19,24 +19,24 @@ import findajob.hrms.core.utilities.ErrorResult;
 import findajob.hrms.core.utilities.Result;
 import findajob.hrms.core.utilities.SuccessDataResult;
 import findajob.hrms.core.utilities.SuccessResult;
-import findajob.hrms.dataAccess.abstracts.JobSeekerDao;
-import findajob.hrms.entities.concretes.JobSeeker;
+import findajob.hrms.dataAccess.abstracts.CandidateDao;
+import findajob.hrms.entities.concretes.Candidate;
 
 @Service
-public class JobSeekerManager implements JobSeekerService {
+public class CandidateManager implements CandidateService {
 
-	private JobSeekerDao jobSeekerDao;
+	private CandidateDao candidateDao;
 	private UserCheckService userCheckService;
 
 	@Autowired
-	public JobSeekerManager(JobSeekerDao jobSeekerDao, FakeCheck userCheckService) {
-		this.jobSeekerDao = jobSeekerDao;
+	public CandidateManager(CandidateDao candidateDao, FakeCheck userCheckService) {
+		this.candidateDao = candidateDao;
 		this.userCheckService = userCheckService;
 	}
 
 	// TODO: Refactor this code block
 	@Override
-	public Result add(JobSeeker jobSeeker) {
+	public Result add(Candidate candidate) {
 
 		// this code block changes after learn
 		/*
@@ -56,25 +56,25 @@ public class JobSeekerManager implements JobSeekerService {
 		 * emailVerification(jobSeeker.getEmail()); }
 		 */
 		Result error = BusinessRules
-				.Run(findByNationalityId(jobSeeker.getNationalityId()), findByEmail(jobSeeker.getEmail()),
-						this.JobSeekerCheck(jobSeeker), this.PasswordCheck(jobSeeker),
-						this.userCheckService.CheckIfRealPerson(jobSeeker.getNationalityId(), jobSeeker.getFirstName(),
-								jobSeeker.getLastName(), jobSeeker.getBirthday()),
-						emailVerification(jobSeeker.getEmail()));
-		if(error.isSuccess()) {
-			this.jobSeekerDao.save(jobSeeker);
+				.Run(findByNationalityId(candidate.getNationalityId()), findByEmail(candidate.getEmail()),
+						this.CandidateCheck(candidate), this.PasswordCheck(candidate),
+						this.userCheckService.CheckIfRealPerson(candidate.getNationalityId(), candidate.getFirstName(),
+								candidate.getLastName(), candidate.getBirthday()),
+						emailVerification(candidate.getEmail()));
+		if (error.isSuccess()) {
+			this.candidateDao.save(candidate);
 			return new SuccessResult("JobSeeker added");
 		}
 		return error;
 	}
 
 	@Override
-	public DataResult<List<JobSeeker>> getAll() {
+	public DataResult<List<Candidate>> getAll() {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<JobSeeker>>(this.jobSeekerDao.findAll(), "Job seekers listed");
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(), "Job seekers listed");
 	}
 
-	private Result JobSeekerCheck(JobSeeker jS) {
+	private Result CandidateCheck(Candidate jS) {
 		if (jS.getPassword().strip().isEmpty() || jS.getBirthday().toString().isEmpty()
 				|| jS.getFirstName().strip().isEmpty() || jS.getLastName().strip().isEmpty()
 				|| jS.getNationalityId().strip().isEmpty() || jS.getEmail().strip().isEmpty()) {
@@ -85,14 +85,14 @@ public class JobSeekerManager implements JobSeekerService {
 	}
 
 	private Result findByNationalityId(String nationalityId) {
-		if (this.jobSeekerDao.existsJobSeekerByNationalityId(nationalityId)) {
+		if (this.candidateDao.existsCandidateByNationalityId(nationalityId)) {
 			return new ErrorResult("NationalityId already exists");
 		}
 		return new SuccessResult();
 	}
 
 	private Result findByEmail(String email) {
-		if (this.jobSeekerDao.existsJobSeekerByEmail(email)) {
+		if (this.candidateDao.existsCandidateByEmail(email)) {
 			return new ErrorResult("Job Seeker have already account");
 		}
 		return new SuccessResult();
@@ -111,8 +111,8 @@ public class JobSeekerManager implements JobSeekerService {
 		return new ErrorResult("Email verification fail");
 	}
 
-	private Result PasswordCheck(JobSeeker jobSeeker) {
-		if (jobSeeker.getPassword().equals(jobSeeker.getRePassword())) {
+	private Result PasswordCheck(Candidate candidate) {
+		if (candidate.getPassword().equals(candidate.getRePassword())) {
 			return new SuccessResult();
 		}
 		return new ErrorResult("Password & RePassword must same");
