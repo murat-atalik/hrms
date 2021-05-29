@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import findajob.hrms.business.abstracts.CompanyService;
 import findajob.hrms.business.abstracts.EmployerService;
 import findajob.hrms.core.Business.BusinessRules;
 import findajob.hrms.core.utilities.DataResult;
@@ -20,10 +21,11 @@ import findajob.hrms.entities.concretes.Employer;
 @Service
 public class EmployerManager implements EmployerService {
 	private EmployerDao employerDao;
-
+	private CompanyService companyService;
 	@Autowired
-	public EmployerManager(EmployerDao employerDao) {
+	public EmployerManager(EmployerDao employerDao,CompanyService companyService) {
 		this.employerDao = employerDao;
+		this.companyService=companyService;
 	}
 
 	// TODO: Refactor this code block
@@ -49,12 +51,15 @@ public class EmployerManager implements EmployerService {
 	private Result EmployerCheck(Employer employer) {
 		String[] parts = employer.getEmail().strip().split("@");
 		String domain = parts[1];
-		if (employer.getCompanyName().strip().isEmpty() || employer.getEmail().strip().isEmpty()
+		if (employer.getCompany().getCompanyName().strip().isEmpty()|| employer.getEmail().strip().isEmpty()
 				|| employer.getPassword().strip().isEmpty() || employer.getPhoneNumber().strip().isEmpty()
-				|| employer.getWebAddress().strip().isEmpty() || !domain.equals(employer.getWebAddress())) {
-			return new SuccessResult();
+				|| employer.getCompany().getWebAddress().strip().isEmpty()) {
+			return new ErrorResult("All fields required");
 		}
-		return new ErrorResult("All fields required");
+		if(domain.equals(this.companyService.getById(employer.getCompany().getId()).getData().getWebAddress())) {
+			return new ErrorResult("  email nor mathced "+domain+"+"+this.companyService.getById(employer.getCompany().getId()).getData().getWebAddress());
+		}
+		return new ErrorResult("  email nor mathced "+domain+"+"+this.companyService.getById(employer.getCompany().getId()).getData().getWebAddress());
 	}
 
 	// Fake email verification
