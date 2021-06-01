@@ -1,7 +1,7 @@
-package findajob.hrms.core.Business;
+package findajob.hrms.core.helpers;
 
-import findajob.hrms.core.utilities.Result;
-import findajob.hrms.core.utilities.SuccessResult;
+import findajob.hrms.core.utilities.results.Result;
+import findajob.hrms.core.utilities.results.SuccessResult;
 
 public class BusinessRules {
 	public static Result Run(Result... logics) {

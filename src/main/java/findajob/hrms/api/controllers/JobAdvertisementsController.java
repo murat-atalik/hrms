@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import findajob.hrms.business.abstracts.JobAdvertisementService;
-import findajob.hrms.core.utilities.DataResult;
-import findajob.hrms.core.utilities.Result;
+import findajob.hrms.core.utilities.results.DataResult;
+import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 
 

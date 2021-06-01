@@ -7,10 +7,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.JobAdvertisementService;
-import findajob.hrms.core.utilities.DataResult;
-import findajob.hrms.core.utilities.Result;
-import findajob.hrms.core.utilities.SuccessDataResult;
-import findajob.hrms.core.utilities.SuccessResult;
+import findajob.hrms.core.utilities.results.DataResult;
+import findajob.hrms.core.utilities.results.Result;
+import findajob.hrms.core.utilities.results.SuccessDataResult;
+import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.JobAdvertisementDao;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 

@@ -1,4 +1,4 @@
-package findajob.hrms.core.utilities;
+package findajob.hrms.core.utilities.results;
 
 public class ErrorDataResult<T> extends DataResult<T> {
 

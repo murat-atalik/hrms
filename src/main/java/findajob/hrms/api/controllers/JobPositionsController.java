@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import findajob.hrms.business.abstracts.JobPositionService;
-import findajob.hrms.core.utilities.DataResult;
-import findajob.hrms.core.utilities.Result;
+import findajob.hrms.core.utilities.results.DataResult;
+import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.JobPosition;
 
 @RestController

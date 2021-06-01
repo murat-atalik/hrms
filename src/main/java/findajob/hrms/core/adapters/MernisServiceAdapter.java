@@ -5,9 +5,9 @@ import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
-import findajob.hrms.core.utilities.ErrorResult;
-import findajob.hrms.core.utilities.Result;
-import findajob.hrms.core.utilities.SuccessResult;
+import findajob.hrms.core.utilities.results.ErrorResult;
+import findajob.hrms.core.utilities.results.Result;
+import findajob.hrms.core.utilities.results.SuccessResult;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoap;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
 

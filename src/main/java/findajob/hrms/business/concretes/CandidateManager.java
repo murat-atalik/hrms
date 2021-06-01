@@ -10,15 +10,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.CandidateService;
-import findajob.hrms.core.Business.BusinessRules;
 import findajob.hrms.core.adapters.FakeCheck;
 import findajob.hrms.core.adapters.MernisServiceAdapter;
 import findajob.hrms.core.adapters.UserCheckService;
-import findajob.hrms.core.utilities.DataResult;
-import findajob.hrms.core.utilities.ErrorResult;
-import findajob.hrms.core.utilities.Result;
-import findajob.hrms.core.utilities.SuccessDataResult;
-import findajob.hrms.core.utilities.SuccessResult;
+import findajob.hrms.core.helpers.BusinessRules;
+import findajob.hrms.core.utilities.results.DataResult;
+import findajob.hrms.core.utilities.results.ErrorResult;
+import findajob.hrms.core.utilities.results.Result;
+import findajob.hrms.core.utilities.results.SuccessDataResult;
+import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.CandidateDao;
 import findajob.hrms.entities.concretes.Candidate;
 
