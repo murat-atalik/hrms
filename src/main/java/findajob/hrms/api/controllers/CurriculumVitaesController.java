@@ -15,6 +15,7 @@ import findajob.hrms.business.abstracts.CurriculumVitaeService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.CurriculumVitae;
+import findajob.hrms.entities.dtos.CVAddDto;
 
 
 	@RestController
@@ -30,7 +31,7 @@ import findajob.hrms.entities.concretes.CurriculumVitae;
 		}
 
 		@PostMapping("/add")
-		public Result add(@RequestBody CurriculumVitae curriculumVitae) {
+		public Result add(@RequestBody CVAddDto curriculumVitae) {
 			return this.curriculumVitaeService.addCv(curriculumVitae);
 		}
 				@PostMapping("/addImage")
@@ -52,7 +53,7 @@ import findajob.hrms.entities.concretes.CurriculumVitae;
 		}
 		
 		@GetMapping("/getbyid")
-		public DataResult<CurriculumVitae> getById(@RequestParam int id) {
+		public DataResult<List<CurriculumVitae>> getById(@RequestParam int id) {
 			return this.curriculumVitaeService.getByCandidateId(id);
 		}
 

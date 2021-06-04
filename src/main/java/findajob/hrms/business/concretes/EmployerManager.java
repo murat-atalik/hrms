@@ -49,13 +49,9 @@ public class EmployerManager implements EmployerService {
 	}
 
 	private Result EmployerCheck(Employer employer) {
-		String[] parts = employer.getEmail().strip().split("@");
+		String[] parts = employer.getEmail().split("@");
 		String domain = parts[1];
-		if (employer.getCompany().getCompanyName().strip().isEmpty()|| employer.getEmail().strip().isEmpty()
-				|| employer.getPassword().strip().isEmpty() || employer.getPhoneNumber().strip().isEmpty()
-				|| employer.getCompany().getWebAddress().strip().isEmpty()) {
-			return new ErrorResult("All fields required");
-		}
+
 		if(domain.equals(this.companyService.getById(employer.getCompany().getId()).getData().getWebAddress())) {
 			return new ErrorResult("  email nor mathced "+domain+"+"+this.companyService.getById(employer.getCompany().getId()).getData().getWebAddress());
 		}

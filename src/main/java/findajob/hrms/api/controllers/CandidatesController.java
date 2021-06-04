@@ -13,6 +13,7 @@ import findajob.hrms.business.abstracts.CandidateService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Candidate;
+import findajob.hrms.entities.dtos.CandidateDto;
 
 @RestController
 @RequestMapping("api/candidates")
@@ -25,7 +26,7 @@ public class CandidatesController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody Candidate candidate  ) {
+	public Result add(@RequestBody CandidateDto candidate  ) {
 		return this.candidateService.add(candidate);
 	}
 

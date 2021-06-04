@@ -33,7 +33,7 @@ public class Education {
 	@Column(name = "school_name")
 	@NotNull
 	@NotBlank
-	private int schoolName;
+	private String schoolName;
 
 	@Column(name = "graduation_date")
 	private Date graduationDate;

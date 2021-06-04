@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.CandidateService;
+import findajob.hrms.business.abstracts.UserService;
 import findajob.hrms.core.adapters.FakeCheck;
 import findajob.hrms.core.adapters.MernisServiceAdapter;
 import findajob.hrms.core.adapters.UserCheckService;
@@ -21,49 +22,51 @@ import findajob.hrms.core.utilities.results.SuccessDataResult;
 import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.CandidateDao;
 import findajob.hrms.entities.concretes.Candidate;
+import findajob.hrms.entities.concretes.User;
+import findajob.hrms.entities.dtos.CandidateDto;
 
 @Service
 public class CandidateManager implements CandidateService {
 
 	private CandidateDao candidateDao;
 	private UserCheckService userCheckService;
+	private UserService userService;
 
 	@Autowired
-	public CandidateManager(CandidateDao candidateDao, FakeCheck userCheckService) {
+	public CandidateManager(CandidateDao candidateDao, FakeCheck userCheckService, UserService userService) {
 		this.candidateDao = candidateDao;
 		this.userCheckService = userCheckService;
+		this.userService = userService;
 	}
 
-	// TODO: Refactor this code block
+	// TODO: hatayı bul db ye fazladan bir user ekleniyor 
 	@Override
-	public Result add(Candidate candidate) {
+	public Result add(CandidateDto candidate) {
 
-		// this code block changes after learn
-		/*
-		 * if (!findByNationalityId(jobSeeker.getNationalityId()).isSuccess()) { return
-		 * findByNationalityId(jobSeeker.getNationalityId()); } else if
-		 * (!findByEmail(jobSeeker.getEmail()).isSuccess()) { return
-		 * findByEmail(jobSeeker.getEmail()); } else if
-		 * (!this.JobSeekerCheck(jobSeeker).isSuccess()) { return
-		 * this.JobSeekerCheck(jobSeeker); } else if
-		 * (!this.PasswordCheck(jobSeeker).isSuccess()) { return
-		 * this.PasswordCheck(jobSeeker); } else if
-		 * (this.userCheckService.CheckIfRealPerson(jobSeeker.getNationalityId(),
-		 * jobSeeker.getFirstName(), jobSeeker.getLastName(),
-		 * jobSeeker.getBirthday()).isSuccess()) { return new
-		 * ErrorResult("Invalid User"); } else if
-		 * (!emailVerification(jobSeeker.getEmail()).isSuccess()) { return
-		 * emailVerification(jobSeeker.getEmail()); }
-		 */
-		Result error = BusinessRules
-				.Run(findByNationalityId(candidate.getNationalityId()), findByEmail(candidate.getEmail()),
-						this.CandidateCheck(candidate), this.PasswordCheck(candidate),
-						this.userCheckService.CheckIfRealPerson(candidate.getNationalityId(), candidate.getFirstName(),
-								candidate.getLastName(), candidate.getBirthday()),
-						emailVerification(candidate.getEmail()));
+		Result error = BusinessRules.Run(findByNationalityId(candidate.getNationalityId()),
+				findByEmail(candidate.getEmail()), this.PasswordCheck(candidate),
+				this.userCheckService.CheckIfRealPerson(candidate));
 		if (error.isSuccess()) {
-			this.candidateDao.save(candidate);
-			return new SuccessResult("JobSeeker added");
+			User user = new User();
+			user.setEmail(candidate.getEmail());
+			user.setPassword(candidate.getPassword());
+			
+			
+			Candidate tempCandidate = new Candidate();
+
+			tempCandidate.setBirthday(candidate.getBirthday());
+			tempCandidate.setEmailVerification(true);
+			tempCandidate.setFirstName(candidate.getFirstName());
+			tempCandidate.setLastName(candidate.getLastName());
+			tempCandidate.setNationalityId(candidate.getNationalityId());
+			tempCandidate.setPassword(candidate.getPassword());
+			tempCandidate.setEmail(candidate.getEmail());
+			
+			this.candidateDao.save(tempCandidate);
+			//tempCandidate.setUser(this.userService.getByEmail(candidate.getEmail()).getData());
+			//this.candidateDao.save(tempCandidate);
+			
+			return new SuccessResult("JobSeeker added"+tempCandidate);
 		}
 		return error;
 	}
@@ -72,16 +75,6 @@ public class CandidateManager implements CandidateService {
 	public DataResult<List<Candidate>> getAll() {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(), "Job seekers listed");
-	}
-
-	private Result CandidateCheck(Candidate jS) {
-		if (jS.getPassword().strip().isEmpty() || jS.getBirthday().toString().isEmpty()
-				|| jS.getFirstName().strip().isEmpty() || jS.getLastName().strip().isEmpty()
-				|| jS.getNationalityId().strip().isEmpty() || jS.getEmail().strip().isEmpty()) {
-			return new ErrorResult("All fields required");
-		}
-
-		return new SuccessResult();
 	}
 
 	private Result findByNationalityId(String nationalityId) {
@@ -111,10 +104,17 @@ public class CandidateManager implements CandidateService {
 		return new ErrorResult("Email verification fail");
 	}
 
-	private Result PasswordCheck(Candidate candidate) {
+	private Result PasswordCheck(CandidateDto candidate) {
 		if (candidate.getPassword().equals(candidate.getRePassword())) {
 			return new SuccessResult();
 		}
 		return new ErrorResult("Password & RePassword must same");
 	}
+
+	@Override
+	public DataResult<Candidate> getById(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<Candidate>(this.candidateDao.getOne(id));
+	}
+
 }
