@@ -45,17 +45,17 @@ public class User {
 	@NotNull
 	private String password;
 	
-	@JsonIgnore
-	@OneToOne(mappedBy = "user")
-	private Candidate candidate;
+	//@JsonIgnore
+	//@OneToOne(mappedBy = "user")
+	//private Candidate candidate;
 	
-	@JsonIgnore
-	@OneToOne(mappedBy = "user")
-	private Employer employer;
+	//@JsonIgnore
+	//@OneToOne(mappedBy = "user")
+	//private Employer employer;
 	
-	@JsonIgnore
-	@OneToOne(mappedBy = "user")
-	private Staff staff;
+	//@JsonIgnore
+	//@OneToOne(mappedBy = "user")
+	//private Staff staff;
 	
 
 	

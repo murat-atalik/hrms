@@ -29,12 +29,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "candidates")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","curriculumVitaes"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "curriculumVitaes" })
 public class Candidate extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
+
+	@Column(name = "user_id")
+	private int userId;
 
 	@Column(name = "first_name")
 	@NotBlank
@@ -58,12 +61,12 @@ public class Candidate extends User {
 
 	@Column(name = "email_verification")
 	private boolean emailVerification;
-	
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-	
+
+	// @JsonIgnore
+	// @OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "user_id", referencedColumnName = "id")
+	// private User user;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "candidate")
 	private List<CurriculumVitae> curriculumVitaes;

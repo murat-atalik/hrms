@@ -37,11 +37,14 @@ public class Staff extends User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
+	
+	@Column(name = "user_id")
+	private int userId;
+	
+	//@JsonIgnore
+	//@OneToOne(cascade = CascadeType.ALL)
+	//@JoinColumn(name = "user_id", referencedColumnName = "id")
+	//private User user;
 
 	@ManyToOne()
 	@JoinColumn(name="role_id")

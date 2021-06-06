@@ -25,38 +25,40 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name="employers")
+@Table(name = "employers")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","jobAdvertisements"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "jobAdvertisements" })
 public class Employer extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private int id;
-	
-	@Column(name="phone_number")
+
+	@Column(name = "user_id")
+	private int userId;
+
+	@Column(name = "phone_number")
 	@NotBlank
 	@NotNull
 	private String phoneNumber;
-	
-	@Column(name="email_verification")
+
+	@Column(name = "email_verification")
 	private boolean emailVerification;
-	
-	@Column(name="system_verification")
+
+	@Column(name = "system_verification")
 	private boolean systemVerification;
-	
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-	
+
+	// @JsonIgnore
+	// @OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "user_id", referencedColumnName = "id")
+	// private User user;
+
 	@ManyToOne()
 	@JoinColumn(name = "company_id")
 	private Company company;
-	
+
 	@OneToMany(mappedBy = "employer")
-	private List<JobAdvertisement> jobAdvertisements; 
-	
+	private List<JobAdvertisement> jobAdvertisements;
 
 }

@@ -2,6 +2,8 @@ package findajob.hrms.entities.dtos;
 
 import java.sql.Date;
 
+import javax.validation.constraints.Email;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

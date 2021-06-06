@@ -62,9 +62,10 @@ public class CandidateManager implements CandidateService {
 			tempCandidate.setPassword(candidate.getPassword());
 			tempCandidate.setEmail(candidate.getEmail());
 			
+			//TODO: Geçici çözüm User ile candidate arasındaki one to one kaldırıldı
 			this.candidateDao.save(tempCandidate);
-			//tempCandidate.setUser(this.userService.getByEmail(candidate.getEmail()).getData());
-			//this.candidateDao.save(tempCandidate);
+			tempCandidate.setUserId(this.userService.getByEmail(candidate.getEmail()).getData().getId());
+			this.candidateDao.save(tempCandidate);
 			
 			return new SuccessResult("JobSeeker added"+tempCandidate);
 		}
