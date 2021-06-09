@@ -11,14 +11,19 @@ import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.entities.concretes.Candidate;
 import findajob.hrms.entities.dtos.CandidateDto;
-import tr.gov.nvi.tckimlik.WS.KPSPublicSoap;
-import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
 
 
 @Component
 public class MernisServiceAdapter implements UserCheckService {
 
 	@Override
+	public Result CheckIfRealPerson(CandidateDto candidate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//Kimlik doğrulama sistemi çalışmamaktadır
+	/*@Override
 	public Result CheckIfRealPerson(CandidateDto candidate) {
 		KPSPublicSoap soapClient = new KPSPublicSoapProxy();
 		boolean check = false;
@@ -37,5 +42,5 @@ public class MernisServiceAdapter implements UserCheckService {
 		
 		return new ErrorResult("Invalid nationlity id");
 		
-		};
+		};*/
 	}
