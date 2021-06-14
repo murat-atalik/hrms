@@ -23,7 +23,7 @@ import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.CandidateDao;
 import findajob.hrms.entities.concretes.Candidate;
 import findajob.hrms.entities.concretes.User;
-import findajob.hrms.entities.dtos.CandidateDto;
+import findajob.hrms.entities.dtos.request.CandidateDto;
 
 @Service
 public class CandidateManager implements CandidateService {
@@ -47,10 +47,7 @@ public class CandidateManager implements CandidateService {
 				findByEmail(candidate.getEmail()), this.PasswordCheck(candidate),
 				this.userCheckService.CheckIfRealPerson(candidate));
 		if (error.isSuccess()) {
-			User user = new User();
-			user.setEmail(candidate.getEmail());
-			user.setPassword(candidate.getPassword());
-			
+
 			
 			Candidate tempCandidate = new Candidate();
 

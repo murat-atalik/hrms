@@ -37,4 +37,10 @@ public class JobPositionManager implements JobPositionService {
 		return new SuccessDataResult<List<JobPosition>>(this.jobPositionDao.findAll(), "Job Position listed");
 	}
 
+	@Override
+	public DataResult<JobPosition> getById(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<JobPosition>(this.jobPositionDao.getOne(id));
+	}
+
 }

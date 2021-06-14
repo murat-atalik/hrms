@@ -3,6 +3,7 @@ package findajob.hrms.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,20 +14,22 @@ import findajob.hrms.business.abstracts.StaffService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Staff;
+import findajob.hrms.entities.dtos.request.StaffAddDto;
 
 @RestController
-@RequestMapping("api/systempersonel")
-public class SystemPersonelsController {
+@RequestMapping("api/staff")
+@CrossOrigin
+public class StaffsController {
 
 	private StaffService staffService;
 
 	@Autowired
-	public SystemPersonelsController(StaffService staffService) {
+	public StaffsController(StaffService staffService) {
 		this.staffService = staffService;
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody Staff staff) {
+	public Result add(@RequestBody StaffAddDto staff) {
 		return this.staffService.add(staff);
 	}
 

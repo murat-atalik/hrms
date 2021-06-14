@@ -5,9 +5,10 @@ import java.util.List;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Staff;
+import findajob.hrms.entities.dtos.request.StaffAddDto;
 
 
 public interface StaffService {
-	Result add (Staff staff);
+	Result add (StaffAddDto staff);
 	DataResult<List<Staff>> getAll();
 }

@@ -41,4 +41,16 @@ public class CompanyManager implements CompanyService {
 		return new SuccessDataResult<List<Company>>(this.companyDao.findAll(),"Companies Listed");
 	}
 
+	@Override
+	public DataResult<Company> getByCompanyName(String companyName) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<Company>(this.companyDao.getByCompanyName(companyName));
+	}
+
+	@Override
+	public DataResult<Company> getByWebAdress(String webAdress) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<Company>(this.companyDao.getByWebAddress(webAdress));
+	}
+
 }

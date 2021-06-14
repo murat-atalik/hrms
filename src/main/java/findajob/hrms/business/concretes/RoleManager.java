@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import findajob.hrms.business.abstracts.RoleService;
 import findajob.hrms.core.utilities.results.DataResult;
+import findajob.hrms.core.utilities.results.ErrorResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.core.utilities.results.SuccessDataResult;
 import findajob.hrms.core.utilities.results.SuccessResult;
@@ -32,6 +33,20 @@ public class RoleManager implements RoleService {
 	@Override
 	public DataResult<List<Role>> getAll() {
 		return new SuccessDataResult<List<Role>>( this.roleDao.findAll(),"roles listed");
+	}
+
+	@Override
+	public Result existsRoleByRoleName(String roleName) {
+		if(this.roleDao.existsRoleByRoleName(roleName)) {
+		return new SuccessResult();
+		}
+		return new ErrorResult();
+	}
+
+	@Override
+	public DataResult<Role> getByRoleName(String roleName) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<Role>(this.roleDao.getByRoleName(roleName));
 	}
 
 }

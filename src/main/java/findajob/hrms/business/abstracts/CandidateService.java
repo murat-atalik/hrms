@@ -5,7 +5,7 @@ import java.util.List;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Candidate;
-import findajob.hrms.entities.dtos.CandidateDto;
+import findajob.hrms.entities.dtos.request.CandidateDto;
 
 public interface CandidateService {
 	Result add(CandidateDto candidate);

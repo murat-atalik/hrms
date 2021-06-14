@@ -25,28 +25,49 @@ public class JobAdvertisement {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	@Column(name = "job_position_id")
-	private int jobPositionId;
 
 	@Column(name = "job_description")
 	private String jobDescription;
+	
 	@Column(name = "min_salary")
 	private double minSalary;
+	
 	@Column(name = "max_salary")
 	private double maxSalary;
+	
 	@Column(name = "open_position")
 	private int openPosition;
+	
+
+	@Column(name = "remote")
+	private boolean remote;
+	
 	@Column(name = "application_deadline")
 	private Date applicationDeadline;
+	
 	@Column(name = "release_date")
 	private Date releaseDate;
+	
 	@Column(name = "active")
 	private boolean active;
+	
+	@Column(name = "system_confirmation")
+	private boolean systemConfirmation;
+	
 	@ManyToOne()
 	@JoinColumn(name = "employer_id")
 	private Employer employer;
 
+	
+	@ManyToOne()
+	@JoinColumn(name = "workProgram_id")
+	private WorkProgram workProgram;
+
 	@ManyToOne()
 	@JoinColumn(name = "city_id")
 	private City city;
+	
+	@ManyToOne()
+	@JoinColumn(name = "jobPosition_id")
+	private JobPosition jobPosition;
 }

@@ -1,8 +1,6 @@
 package findajob.hrms.business.concretes;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +25,7 @@ import findajob.hrms.entities.concretes.CurriculumVitae;
 import findajob.hrms.entities.concretes.Education;
 import findajob.hrms.entities.concretes.Experience;
 import findajob.hrms.entities.concretes.Language;
-import findajob.hrms.entities.dtos.CVAddDto;
+import findajob.hrms.entities.dtos.request.CVAddDto;
 
 @Service
 public class CurriculumVitaeManager implements CurriculumVitaeService {

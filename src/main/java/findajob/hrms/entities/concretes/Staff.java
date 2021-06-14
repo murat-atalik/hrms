@@ -31,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "staffs")
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Staff extends User {
 
 	@Id

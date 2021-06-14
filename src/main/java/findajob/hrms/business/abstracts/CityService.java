@@ -9,4 +9,5 @@ import findajob.hrms.entities.concretes.City;
 public interface CityService {
 	Result add(City city);
 	DataResult<List<City>> getAll();
+	DataResult<City> getByPlateNumber(String plateNumber);
 }

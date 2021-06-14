@@ -9,7 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -18,18 +21,20 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "roles")
+@Table(name="work_programs")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","staffs"})
-public class Role {
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","jobAdvertisements"})
+public class WorkProgram {
+	@Column(name="id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	private int id;
-	@Column(name = "role_name")
-	private String roleName;
-
-	@OneToMany(mappedBy = "role")
-	private List<Staff> staffs;
+	@NotNull
+	@NotBlank
+	@Column(name="program_name")
+	private String programName;
+	@JsonIgnore
+	@OneToMany(mappedBy = "workProgram")
+	private List<JobAdvertisement> jobAdvertisements; 
 }

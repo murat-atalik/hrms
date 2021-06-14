@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.CurriculumVitae;
-import findajob.hrms.entities.dtos.CVAddDto;
+import findajob.hrms.entities.dtos.request.CVAddDto;
 
 public interface CurriculumVitaeService {
 	Result addCv(CVAddDto curriculumVitae);

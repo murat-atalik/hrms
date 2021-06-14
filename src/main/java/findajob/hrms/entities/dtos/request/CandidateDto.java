@@ -1,4 +1,4 @@
-package findajob.hrms.entities.dtos;
+package findajob.hrms.entities.dtos.request;
 
 import java.sql.Date;
 

@@ -9,4 +9,6 @@ import findajob.hrms.entities.concretes.Role;
 public interface RoleService {
 	Result add(Role role);
 	DataResult<List<Role>> getAll();
+	Result existsRoleByRoleName(String roleName);
+	DataResult<Role> getByRoleName(String roleName);
 }

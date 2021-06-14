@@ -9,6 +9,8 @@ import findajob.hrms.entities.concretes.Company;
 public interface CompanyService {
 	Result Add(Company company);
 	DataResult<Company> getById(int id);
+	DataResult<Company> getByCompanyName(String companyName);
+	DataResult<Company> getByWebAdress(String webAdress);
 	DataResult<List<Company>> getAll();
 	
 }

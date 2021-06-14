@@ -1,14 +1,14 @@
 package findajob.hrms.core.adapters;
 
-import java.sql.Date;
+
 
 import org.springframework.stereotype.Component;
 
 import findajob.hrms.core.utilities.results.ErrorResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.core.utilities.results.SuccessResult;
-import findajob.hrms.entities.concretes.Candidate;
-import findajob.hrms.entities.dtos.CandidateDto;
+
+import findajob.hrms.entities.dtos.request.CandidateDto;
 
 @Component
 public class FakeCheck implements UserCheckService {
