@@ -11,4 +11,5 @@ public interface EmployerService {
 	Result add(EmployerAddDto employer);
 	DataResult<List<Employer>> getAll();
 	DataResult<Employer> getById(int id);
+	DataResult<Employer> changeConfirmStatus(int id);
 }

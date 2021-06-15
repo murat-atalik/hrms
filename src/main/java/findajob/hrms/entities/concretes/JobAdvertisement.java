@@ -38,9 +38,6 @@ public class JobAdvertisement {
 	@Column(name = "open_position")
 	private int openPosition;
 	
-
-	@Column(name = "remote")
-	private boolean remote;
 	
 	@Column(name = "application_deadline")
 	private Date applicationDeadline;
@@ -70,4 +67,7 @@ public class JobAdvertisement {
 	@ManyToOne()
 	@JoinColumn(name = "jobPosition_id")
 	private JobPosition jobPosition;
+	@ManyToOne()
+	@JoinColumn(name = "typeOfWork_id")
+	private TypeOfWork typeOfWork;
 }

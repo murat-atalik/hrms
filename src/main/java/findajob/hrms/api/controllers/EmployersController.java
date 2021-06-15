@@ -14,6 +14,7 @@ import findajob.hrms.business.abstracts.EmployerService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Employer;
+import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.dtos.request.EmployerAddDto;
 
 @RestController
@@ -37,6 +38,11 @@ public class EmployersController {
 	@GetMapping("/getAll")
 	public DataResult<List<Employer>> getAll() {
 		return this.employerService.getAll();
+	}
+	
+	@PostMapping("/changeSystemConfirmStatus")
+	public DataResult<Employer> changeConfirmStatus(@RequestBody int id) {
+		return this.employerService.changeConfirmStatus(id);
 	}
 
 }

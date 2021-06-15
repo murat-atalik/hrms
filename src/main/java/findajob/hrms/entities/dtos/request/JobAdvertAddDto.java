@@ -16,10 +16,11 @@ public class JobAdvertAddDto {
 	private double minSalary;
 	private double maxSalary;
 	private int openPosition;
-	private boolean remote;
 	private Date applicationDeadline;
 	private boolean active;
-
+	
+	private int remoteId;
+	
 	private int employerId;
 
 	private int workProgramId;

@@ -19,6 +19,7 @@ import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.EmployerDao;
 import findajob.hrms.entities.concretes.Company;
 import findajob.hrms.entities.concretes.Employer;
+import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.concretes.User;
 import findajob.hrms.entities.dtos.request.EmployerAddDto;
 
@@ -79,6 +80,18 @@ public class EmployerManager implements EmployerService {
 	public DataResult<Employer> getById(int id) {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<Employer>(this.employerDao.getOne(id));
+	}
+
+	@Override
+	public DataResult<Employer> changeConfirmStatus(int id) {
+		Employer temp = this.employerDao.getOne(id);
+		if (temp.isSystemVerification()) {
+			temp.setSystemVerification(false);
+		}
+		else temp.setSystemVerification(true);
+		this.employerDao.save(temp);
+
+		return new SuccessDataResult<Employer>(this.employerDao.getOne(id), "Status changed: "+temp.isSystemVerification());
 	}
 
 	private Result EmployerCheck(EmployerAddDto employer) {
