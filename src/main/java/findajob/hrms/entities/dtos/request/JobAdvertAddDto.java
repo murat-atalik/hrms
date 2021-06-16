@@ -19,7 +19,7 @@ public class JobAdvertAddDto {
 	private Date applicationDeadline;
 	private boolean active;
 	
-	private int remoteId;
+	private int WorkTypeId;
 	
 	private int employerId;
 
@@ -27,5 +27,5 @@ public class JobAdvertAddDto {
 
 	private int jobPositionId;
 
-	private String cityPlatenumber;
+	private String cityPlateNumber;
 }

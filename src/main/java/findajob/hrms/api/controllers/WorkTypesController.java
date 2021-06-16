@@ -10,31 +10,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import findajob.hrms.business.abstracts.TypeOfWorkService;
+import findajob.hrms.business.abstracts.WorkTypeService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
-import findajob.hrms.entities.concretes.TypeOfWork;
+import findajob.hrms.entities.concretes.WorkType;
+
 
 @RestController
-@RequestMapping("api/typeofwork")
+@RequestMapping("api/worktype")
 @CrossOrigin
-public class TypeOfWorksController {
-	private TypeOfWorkService typeOfWorkService;
+public class WorkTypesController {
+	private WorkTypeService workTypeService;
 
 	@Autowired
-	public TypeOfWorksController(TypeOfWorkService typeOfWorkService) {
+	public WorkTypesController(WorkTypeService workTypeService) {
 		super();
-		this.typeOfWorkService = typeOfWorkService;
+		this.workTypeService = workTypeService;
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody TypeOfWork typeOfWork) {
-		return this.typeOfWorkService.add(typeOfWork);
+	public Result add(@RequestBody WorkType workType) {
+		return this.workTypeService.add(workType);
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<TypeOfWork>> getAll() {
-		return this.typeOfWorkService.getAll();
+	public DataResult<List<WorkType>> getAll() {
+		return this.workTypeService.getAll();
 	}
 
 }

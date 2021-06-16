@@ -68,6 +68,6 @@ public class JobAdvertisement {
 	@JoinColumn(name = "jobPosition_id")
 	private JobPosition jobPosition;
 	@ManyToOne()
-	@JoinColumn(name = "typeOfWork_id")
-	private TypeOfWork typeOfWork;
+	@JoinColumn(name = "workType_id")
+	private WorkType workType;
 }

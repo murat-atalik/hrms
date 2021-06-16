@@ -11,8 +11,8 @@ import findajob.hrms.business.abstracts.CityService;
 import findajob.hrms.business.abstracts.EmployerService;
 import findajob.hrms.business.abstracts.JobAdvertisementService;
 import findajob.hrms.business.abstracts.JobPositionService;
-import findajob.hrms.business.abstracts.TypeOfWorkService;
 import findajob.hrms.business.abstracts.WorkProgramService;
+import findajob.hrms.business.abstracts.WorkTypeService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.core.utilities.results.SuccessDataResult;
@@ -29,11 +29,11 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	private EmployerService employerService;
 	private JobPositionService jobPositionService;
 	private WorkProgramService workProgramService;
-	private TypeOfWorkService typeOfWorkService;
+	private WorkTypeService workTypeService;
 	
 		@Autowired
 	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao, CityService cityService,
-			EmployerService employerService, JobPositionService jobPositionService,TypeOfWorkService typeOfWorkService,
+			EmployerService employerService, JobPositionService jobPositionService,WorkTypeService workTypeService,
 			WorkProgramService workProgramService) {
 		super();
 		this.jobAdvertisementDao = jobAdvertisementDao;
@@ -41,7 +41,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		this.employerService = employerService;
 		this.jobPositionService = jobPositionService;
 		this.workProgramService = workProgramService;
-		this.typeOfWorkService =typeOfWorkService;
+		this.workTypeService =workTypeService;
 	}
 
 
@@ -63,8 +63,8 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		temp.setSystemConfirmation(false);
 		
 		
-		temp.setTypeOfWork(this.typeOfWorkService.getById( jobAdvertisement.getRemoteId()).getData());	
-		temp.setCity(this.cityService.getByPlateNumber(jobAdvertisement.getCityPlatenumber()).getData());
+		temp.setWorkType(this.workTypeService.getById( jobAdvertisement.getWorkTypeId()).getData());	
+		temp.setCity(this.cityService.getByPlateNumber(jobAdvertisement.getCityPlateNumber()).getData());
 		temp.setEmployer(this.employerService.getById(jobAdvertisement.getEmployerId()).getData());
 		temp.setJobPosition(this.jobPositionService.getById(jobAdvertisement.getJobPositionId()).getData());
 		temp.setWorkProgram(this.workProgramService.getById(jobAdvertisement.getWorkProgramId()).getData());
