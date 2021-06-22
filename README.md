@@ -1,2 +1,3 @@
 # hrms
-## (LiveDemo) [https://ma-hrms.herokuapp.com]
+## LiveDemo
+(Demo) [https://ma-hrms.herokuapp.com]
