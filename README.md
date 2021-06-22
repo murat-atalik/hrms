@@ -1,3 +1,3 @@
 # hrms
 ## LiveDemo
-(Demo)[https://ma-hrms.herokuapp.com]
+[Demo](https://ma-hrms.herokuapp.com)
