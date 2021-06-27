@@ -34,13 +34,9 @@ public class CurriculumVitae {
 	private int id;
 
 	@Column(name = "github")
-	@NotBlank
-	@NotNull
 	private String github;
-
+	
 	@Column(name = "linkedin")
-	@NotBlank
-	@NotNull
 	private String linkedin;
 
 	@Column(name = "cover_letter")

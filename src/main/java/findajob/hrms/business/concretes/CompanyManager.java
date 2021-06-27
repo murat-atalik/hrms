@@ -23,7 +23,14 @@ public class CompanyManager implements CompanyService {
 	}
 	
 	@Override
-	public Result Add(Company company) {
+	public Result add(Company company) {
+		this.companyDao.save(company);
+		company.setWaitingUpdate(false);
+		return new SuccessResult("Company Added");
+			
+	}
+	@Override
+	public Result update(Company company) {
 		this.companyDao.save(company);
 		return new SuccessResult("Company Added");
 			

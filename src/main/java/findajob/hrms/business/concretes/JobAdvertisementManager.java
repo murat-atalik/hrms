@@ -64,7 +64,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		
 		
 		temp.setWorkType(this.workTypeService.getById( jobAdvertisement.getWorkTypeId()).getData());	
-		temp.setCity(this.cityService.getByPlateNumber(jobAdvertisement.getCityPlateNumber()).getData());
+		temp.setCity(this.cityService.getById(jobAdvertisement.getCityId()).getData());
 		temp.setEmployer(this.employerService.getById(jobAdvertisement.getEmployerId()).getData());
 		temp.setJobPosition(this.jobPositionService.getById(jobAdvertisement.getJobPositionId()).getData());
 		temp.setWorkProgram(this.workProgramService.getById(jobAdvertisement.getWorkProgramId()).getData());
@@ -128,6 +128,23 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	public DataResult<List<JobAdvertisement>> getAllUnConfirmed() {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllSystemUnConfirmed());
+	}
+
+
+
+	@Override
+	public DataResult<List<JobAdvertisement>> getByEmployerId(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getByEmployerId(id),
+				"Listed By Employer");
+	}
+
+
+
+	@Override
+	public DataResult<JobAdvertisement> getById(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<JobAdvertisement>(this.jobAdvertisementDao.getById(id));
 	}
 
 }

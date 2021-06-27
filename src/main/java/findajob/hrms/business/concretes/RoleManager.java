@@ -36,17 +36,17 @@ public class RoleManager implements RoleService {
 	}
 
 	@Override
-	public Result existsRoleByRoleName(String roleName) {
-		if(this.roleDao.existsRoleByRoleName(roleName)) {
+	public Result existsRoleById(int id) {
+		if(this.roleDao.existsById(id)) {
 		return new SuccessResult();
 		}
 		return new ErrorResult();
 	}
 
 	@Override
-	public DataResult<Role> getByRoleName(String roleName) {
+	public DataResult<Role> getById(int id) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<Role>(this.roleDao.getByRoleName(roleName));
+		return new SuccessDataResult<Role>(this.roleDao.getById(id));
 	}
 
 }

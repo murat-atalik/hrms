@@ -35,9 +35,9 @@ public class CityManager implements CityService{
 	}
 
 	@Override
-	public DataResult<City> getByPlateNumber(String plateNumber){
+	public DataResult<City> getById(int id){
 		
-		return new SuccessDataResult<City>(this.cityDao.getByPlateNumber(plateNumber));
+		return new SuccessDataResult<City>(this.cityDao.getById(id));
 	}
 
 }

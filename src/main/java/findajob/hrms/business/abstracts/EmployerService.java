@@ -9,6 +9,7 @@ import findajob.hrms.entities.dtos.request.EmployerAddDto;
 
 public interface EmployerService {
 	Result add(EmployerAddDto employer);
+	Result update(EmployerAddDto employer);
 	DataResult<List<Employer>> getAll();
 	DataResult<Employer> getById(int id);
 	DataResult<Employer> changeConfirmStatus(int id);

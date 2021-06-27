@@ -10,5 +10,7 @@ import findajob.hrms.entities.dtos.request.StaffAddDto;
 
 public interface StaffService {
 	Result add (StaffAddDto staff);
+	Result update (StaffAddDto staff);
 	DataResult<List<Staff>> getAll();
+	DataResult<Staff> getById(int id);
 }

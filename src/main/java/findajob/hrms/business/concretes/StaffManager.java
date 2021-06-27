@@ -38,7 +38,7 @@ public class StaffManager implements StaffService {
 	public Result add(StaffAddDto staff) {
 
 		Result error = BusinessRules.Run(this.EmailVerification(staff.getEmail()), this.EmailCheck(staff.getEmail()),
-				this.PasswordCheck(staff.getPassword(), staff.getRePassword()),this.RoleCheck(staff.getRoleName()));
+				this.PasswordCheck(staff.getPassword(), staff.getRePassword()),this.RoleCheck(staff.getRoleId()));
 		if (error.isSuccess()) {
 			Staff tempStaff = new Staff();
 			tempStaff.setEmail(staff.getEmail());
@@ -46,9 +46,28 @@ public class StaffManager implements StaffService {
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setPassword(staff.getPassword());
 
-			tempStaff.setRole(this.roleService.getByRoleName(staff.getRoleName()).getData());
+			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());
 			this.staffDao.save(tempStaff);
 			tempStaff.setUserId(this.userService.getByEmail(staff.getEmail()).getData().getId());
+			this.staffDao.save(tempStaff);
+			return new SuccessResult("System personel addedd");
+		}
+		return error;
+	}
+	@Override
+	public Result update(StaffAddDto staff) {
+
+		Result error = BusinessRules.Run(this.EmailVerification(staff.getEmail()), this.EmailCheck(staff.getEmail(),staff.getId()),
+				this.PasswordCheck(staff.getPassword(), staff.getRePassword()),this.RoleCheck(staff.getRoleId()));
+		if (error.isSuccess()) {
+			Staff tempStaff = this.staffDao.getById(staff.getId());
+			
+			tempStaff.setEmail(staff.getEmail());
+			tempStaff.setFirstName(staff.getFirstName());
+			tempStaff.setLastName(staff.getLastName());
+			tempStaff.setPassword(staff.getPassword());
+			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());			
+			
 			this.staffDao.save(tempStaff);
 			return new SuccessResult("System personel addedd");
 		}
@@ -78,6 +97,16 @@ public class StaffManager implements StaffService {
 		}
 		return new ErrorResult("Invalid email");
 	}
+	private Result EmailCheck(String email,int id) {
+
+		if (!this.staffDao.existsStaffByEmail(email)) {
+			return new SuccessResult();
+		}
+		if (this.staffDao.existsStaffByEmail(email)&&this.staffDao.getById(id).getEmail().equals(email)) {
+			return new SuccessResult();
+		}
+		return new ErrorResult("Invalid email");
+	}
 
 	private Result PasswordCheck(String password, String rePassword) {
 
@@ -86,11 +115,17 @@ public class StaffManager implements StaffService {
 		}
 		return new ErrorResult("Password must equal");
 	}
-	private Result RoleCheck(String roleName) {
+	private Result RoleCheck(int id) {
 
-		if (this.roleService.existsRoleByRoleName(roleName).isSuccess()) {
+		if (this.roleService.existsRoleById(id).isSuccess()) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Role not exists");
+		return new ErrorResult("Role not exists"+this.roleService.getById(id).getData());
+	}
+
+	@Override
+	public DataResult<Staff> getById(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<Staff>(this.staffDao.getById(id),"User listelendi");
 	}
 }

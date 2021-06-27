@@ -33,6 +33,9 @@ public class Company {
 	@Column(name="web_address")
 	private String webAddress;
 	
+	@Column(name="waiting_update")
+	private boolean waitingUpdate;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Employer> employers; 

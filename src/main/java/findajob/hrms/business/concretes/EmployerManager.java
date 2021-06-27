@@ -50,7 +50,8 @@ public class EmployerManager implements EmployerService {
 			Company tempCompany = new Company();
 			tempCompany.setCompanyName(employer.getCompanyName());
 			tempCompany.setWebAddress(employer.getWebAddress());
-			this.companyService.Add(tempCompany);
+			tempCompany.setWaitingUpdate(false);
+			this.companyService.add(tempCompany);
 		}
 
 		tempEmployer.setCompany(this.companyService.getByWebAdress(employer.getWebAddress()).getData());
@@ -69,7 +70,14 @@ public class EmployerManager implements EmployerService {
 		}
 		return new ErrorResult(error.getMessage());
 	}
+	
+	@Override
+	public Result update(EmployerAddDto employer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	
 	@Override
 	public DataResult<List<Employer>> getAll() {
 
@@ -130,5 +138,6 @@ public class EmployerManager implements EmployerService {
 		}
 		return new ErrorResult("Password must equal");
 	}
+
 
 }

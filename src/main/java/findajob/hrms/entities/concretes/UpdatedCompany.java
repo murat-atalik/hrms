@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,23 +19,28 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name="cities")
+@Table(name="updated_companies")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","jobAdvertisements"})
-public class City {
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","employers"})
+public class UpdatedCompany {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
+	@Column(name="company_id")
+	private int companyId;
 	
-	@NotNull
-	@NotBlank
-	@Column(name="city_name")
-	private String cityName;
+	@Column(name="employer_id")
+	private int employerId;
 	
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "city")
-	private List<JobAdvertisement> jobAdvertisements; 
+	@Column(name="company_name")
+	private String companyName;
+	
+	@Column(name="web_address")
+	private String webAddress;
+	
+	@Column(name="waiting_update")
+	private boolean waitingUpdate;
+	
 }
