@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CVAddDto {
+	
 	private int candidateId;
 	private String coverLetter;
 	private String github;

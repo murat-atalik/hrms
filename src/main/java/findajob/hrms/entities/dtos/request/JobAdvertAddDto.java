@@ -27,5 +27,5 @@ public class JobAdvertAddDto {
 
 	private int jobPositionId;
 
-	private String cityPlateNumber;
+	private int cityId;
 }

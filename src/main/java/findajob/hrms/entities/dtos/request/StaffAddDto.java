@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StaffAddDto {
+	private int id;
 	private String email;
 	private String firstName;
 	private String lastName;
-	private String roleName;
+	private int roleId;
 	private String password;
 	private String rePassword;
 	

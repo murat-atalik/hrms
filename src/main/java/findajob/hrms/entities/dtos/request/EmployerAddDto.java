@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployerAddDto {
+	private int id;
 		private String companyName;
 		private String webAddress;
 		private String email;
