@@ -39,9 +39,9 @@ public class CitiesController {
 		return this.cityService.getAll();
 	}
 	
-	@GetMapping("/getbyplatenumber")	
-	public DataResult<City> getByPlateNumber(@RequestParam String plateNumber) {
-		return this.cityService.getByPlateNumber(plateNumber);
+	@GetMapping("/getbyid")	
+	public DataResult<City> getById(@RequestParam int cityId) {
+		return this.cityService.getById(cityId);
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import findajob.hrms.business.abstracts.EmployerService;
@@ -34,12 +35,19 @@ public class EmployersController {
 	public Result add(@RequestBody EmployerAddDto employer) {
 		return this.employerService.add(employer);
 	}
+	@PostMapping("/update")
+	public Result update(@RequestBody EmployerAddDto employer) {
+		return this.employerService.update(employer);
+	}
 
 	@GetMapping("/getAll")
 	public DataResult<List<Employer>> getAll() {
 		return this.employerService.getAll();
 	}
-	
+	@GetMapping("/getbyid")
+	public DataResult<Employer> getById(@RequestParam int id) {
+		return this.employerService.getById(id);
+	}
 	@PostMapping("/changeSystemConfirmStatus")
 	public DataResult<Employer> changeConfirmStatus(@RequestBody int id) {
 		return this.employerService.changeConfirmStatus(id);

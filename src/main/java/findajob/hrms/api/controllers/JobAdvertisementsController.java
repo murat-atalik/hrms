@@ -46,6 +46,10 @@ public class JobAdvertisementsController {
 	public DataResult<List<JobAdvertisement>> getByCompanyId(@RequestParam int id) {
 		return this.jobAdvertisementService.getByEmployer_CompanyId(id);
 	}
+	@GetMapping("/getByEmployer")
+	public DataResult<List<JobAdvertisement>> getByEmployerId(@RequestParam int id) {
+		return this.jobAdvertisementService.getByEmployerId(id);
+	}
 	@PostMapping("/changeActiveStatus")
 	public DataResult<JobAdvertisement> changeActiveStatus(@RequestBody int id) {
 		return this.jobAdvertisementService.changeActiveStatus(id);
