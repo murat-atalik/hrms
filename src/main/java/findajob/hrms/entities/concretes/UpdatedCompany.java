@@ -34,11 +34,17 @@ public class UpdatedCompany {
 	@Column(name="employer_id")
 	private int employerId;
 	
-	@Column(name="company_name")
-	private String companyName;
+	@Column(name="old_company_name")
+	private String OldCompanyName;
 	
-	@Column(name="web_address")
-	private String webAddress;
+	@Column(name="new_company_name")
+	private String newCompanyName;
+	
+	@Column(name="old_web_address")
+	private String oldWebAddress;
+	
+	@Column(name="new_web_address")
+	private String newWebAddress;
 	
 	@Column(name="waiting_update")
 	private boolean waitingUpdate;

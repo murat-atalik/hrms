@@ -35,7 +35,7 @@ public class UpdatedCompanyManager implements UpdatedCompanyService{
 		Company company = new Company();
 		company = this.companyService.getById(updatedCompany.getCompanyId()).getData();
 		
-		if(!company.isWaitingUpdate()) {
+		if(company.isWaitingUpdate()) {
 			return new ErrorResult("Lütfen önceki güncellemeyi iptal edin");
 		}
 		company.setWaitingUpdate(true);
@@ -51,8 +51,8 @@ public class UpdatedCompanyManager implements UpdatedCompanyService{
 		updatedCompany= this.updatedCompanyDao.getById(id);
 		 Company company = new Company();
 		 company.setId(updatedCompany.getCompanyId());
-		 company.setCompanyName(updatedCompany.getCompanyName());
-		 company.setWebAddress(updatedCompany.getWebAddress());
+		 company.setCompanyName(updatedCompany.getNewCompanyName());
+		 company.setWebAddress(updatedCompany.getNewWebAddress());
 		 company.setWaitingUpdate(false);
 		if(this.companyService.update(company).isSuccess()) {
 			this.updatedCompanyDao.delete(updatedCompany);

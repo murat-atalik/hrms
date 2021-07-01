@@ -16,6 +16,7 @@ import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.dtos.request.JobAdvertAddDto;
+import findajob.hrms.entities.dtos.request.JobAdvertFilter;
 
 
 @RestController
@@ -65,5 +66,9 @@ public class JobAdvertisementsController {
 	@PostMapping("/changeConfirmStatus")
 	public DataResult<JobAdvertisement> changeConfirmStatus(@RequestBody int id) {
 		return this.jobAdvertisementService.changeConfirmStatus(id);
+	}
+	@PostMapping("/getAllFiltered")
+	public DataResult<List<JobAdvertisement>> getAllFiltered(@RequestBody JobAdvertFilter jobAdvertFilter) {
+		return this.jobAdvertisementService.getByIsActiveAndFilter( jobAdvertFilter);
 	}
 }

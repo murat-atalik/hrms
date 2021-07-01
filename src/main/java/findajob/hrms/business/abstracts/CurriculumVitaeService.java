@@ -18,5 +18,6 @@ public interface CurriculumVitaeService {
 	DataResult<List<CurriculumVitae>> getAllSortedByGraduateDate();
 	DataResult<List<CurriculumVitae>> getAllSortedByExperienceQuitDate();
 	DataResult<List<CurriculumVitae>> getByCandidateId(int id);
+	DataResult<CurriculumVitae> getById(int id);
 }
 

@@ -57,7 +57,11 @@ public class CurriculumVitaesController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<List<CurriculumVitae>> getById(@RequestParam int id) {
+	public DataResult<CurriculumVitae> getById(@RequestParam int id) {
+		return this.curriculumVitaeService.getById(id);
+	}
+	@GetMapping("/getbycandidateid")
+	public DataResult<List<CurriculumVitae>> getByCandidateId(@RequestParam int id) {
 		return this.curriculumVitaeService.getByCandidateId(id);
 	}
 

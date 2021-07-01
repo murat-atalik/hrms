@@ -6,6 +6,7 @@ import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.dtos.request.JobAdvertAddDto;
+import findajob.hrms.entities.dtos.request.JobAdvertFilter;
 
 public interface JobAdvertisementService {
 	Result add(JobAdvertAddDto jobAdvertisement);
@@ -21,4 +22,5 @@ public interface JobAdvertisementService {
 	DataResult<List<JobAdvertisement>> getAllConfirmed();
 	DataResult<List<JobAdvertisement>> getAllUnConfirmed();
 	DataResult<JobAdvertisement> getById(int id);
+	DataResult<List<JobAdvertisement>> getByIsActiveAndFilter(JobAdvertFilter jobAdFilter);
 }

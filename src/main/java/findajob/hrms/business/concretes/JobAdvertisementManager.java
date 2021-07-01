@@ -20,6 +20,7 @@ import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.JobAdvertisementDao;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.dtos.request.JobAdvertAddDto;
+import findajob.hrms.entities.dtos.request.JobAdvertFilter;
 
 @Service
 public class JobAdvertisementManager implements JobAdvertisementService {
@@ -145,6 +146,14 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	public DataResult<JobAdvertisement> getById(int id) {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<JobAdvertisement>(this.jobAdvertisementDao.getById(id));
+	}
+
+
+
+	@Override
+	public DataResult<List<JobAdvertisement>> getByIsActiveAndFilter(JobAdvertFilter jobAdFilter) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getByFilter(jobAdFilter),"Filtreleme başarılı");
 	}
 
 }

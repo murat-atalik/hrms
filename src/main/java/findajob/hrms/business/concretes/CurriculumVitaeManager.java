@@ -126,4 +126,10 @@ public class CurriculumVitaeManager implements CurriculumVitaeService {
 		return new SuccessDataResult<List<CurriculumVitae>>(this.curriculumVitaeDao.getByCandidateId(id));
 	}
 
+	@Override
+	public DataResult<CurriculumVitae> getById(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<CurriculumVitae>(this.curriculumVitaeDao.getById(id),"Özgeçmiş listelendi");
+	}
+
 }

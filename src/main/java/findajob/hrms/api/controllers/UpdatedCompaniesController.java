@@ -1,4 +1,4 @@
-package findajob.hrms.entities.concretes;
+package findajob.hrms.api.controllers;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import findajob.hrms.business.abstracts.UpdatedCompanyService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
+import findajob.hrms.entities.concretes.UpdatedCompany;
 
 @CrossOrigin
 @RestController

@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import findajob.hrms.entities.concretes.JobAdvertisement;
+import findajob.hrms.entities.dtos.request.JobAdvertFilter;
 
 public interface JobAdvertisementDao extends JpaRepository<JobAdvertisement, Integer> {
 	List<JobAdvertisement> getByEmployer_CompanyId(int id);
@@ -30,4 +32,11 @@ public interface JobAdvertisementDao extends JpaRepository<JobAdvertisement, Int
 
 	@Query("From JobAdvertisement where systemConfirmation= false ")
 	List<JobAdvertisement> getAllSystemUnConfirmed();
+	
+	@Query("Select j from JobAdvertisement j where ((:#{#filter.cityId}) IS NULL OR j.city.id IN (:#{#filter.cityId}))"
+	        +" and ((:#{#filter.jobPositionId}) IS NULL OR j.jobPosition.id IN (:#{#filter.jobPositionId}))"
+	        +" and ((:#{#filter.workProgramId}) IS NULL OR j.workProgram.id IN (:#{#filter.workProgramId}))"
+	        +" and ((:#{#filter.workTypeId}) IS NULL OR j.workType.id IN (:#{#filter.workTypeId}))"
+	        +" and j.active=true")
+ List<JobAdvertisement> getByFilter(@Param("filter") JobAdvertFilter jobAdFilter);
 }
