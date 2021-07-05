@@ -25,7 +25,12 @@ import findajob.hrms.entities.concretes.CurriculumVitae;
 import findajob.hrms.entities.concretes.Education;
 import findajob.hrms.entities.concretes.Experience;
 import findajob.hrms.entities.concretes.Language;
+import findajob.hrms.entities.dtos.request.AbilityDto;
 import findajob.hrms.entities.dtos.request.CVAddDto;
+import findajob.hrms.entities.dtos.request.CVUpdateDto;
+import findajob.hrms.entities.dtos.request.EducationDto;
+import findajob.hrms.entities.dtos.request.ExperienceDto;
+import findajob.hrms.entities.dtos.request.LanguageDto;
 
 @Service
 public class CurriculumVitaeManager implements CurriculumVitaeService {
@@ -55,42 +60,120 @@ public class CurriculumVitaeManager implements CurriculumVitaeService {
 	public Result addCv(CVAddDto curriculumVitae) {
 		CurriculumVitae cv = new CurriculumVitae();
 		cv.setCandidate(this.candidateService.getById(curriculumVitae.getCandidateId()).getData());
+		cv.setFirstName(curriculumVitae.getFirstName());
+		cv.setLastName(curriculumVitae.getLastName());
+		cv.setEmail(curriculumVitae.getEmail());
 		cv.setCoverLetter(curriculumVitae.getCoverLetter());
-		 LocalDate now = LocalDate.now();  
+		cv.setActive(false);
+		LocalDate now = LocalDate.now();
 		cv.setCreatedDate(now);
 		cv.setImageUrl(curriculumVitae.getImageUrl());
 		cv.setGithub(curriculumVitae.getGithub());
 		cv.setLinkedin(curriculumVitae.getLinkedin());
-		CurriculumVitae tempCv=	this.curriculumVitaeDao.save(cv);
-		
-		Education education = new Education();
-		education.setGraduationDate(curriculumVitae.getGraduationDate());
-		education.setSchoolName(curriculumVitae.getSchoolName());
-		education.setStartingDate(curriculumVitae.getEducationStartDate());
-		education.setCurriculum_vitae(tempCv);
-		
-		Ability ability = new Ability();
-		ability.setAbilityName(curriculumVitae.getAbility());
-		ability.setCurriculum_vitae(tempCv);
-		
-		Experience experience = new Experience();
-		experience.setBusinessName(curriculumVitae.getBusinessName());
-		experience.setPosition(null);
-		experience.setQuitDate(curriculumVitae.getWorkQuitDate());
-		experience.setStartingDate(curriculumVitae.getWorkStartDate());
-		experience.setCurriculum_vitae(tempCv);
-		
-		Language language = new Language();
-		language.setLanguage(curriculumVitae.getLanguageName());
-		language.setDegree(curriculumVitae.getLanguageDegree());
-		language.setCurriculum_vitae(tempCv);
-		
-		this.educationService.add(education);
-		this.abilityService.add(ability);
-		this.experienceService.add(experience);
-		this.languageService.add(language);
-		
-		return new SuccessResult("added");
+		CurriculumVitae tempCv = this.curriculumVitaeDao.save(cv);
+
+		for (EducationDto educationDto : curriculumVitae.getEducations()) {
+			Education education = new Education();
+			education.setGraduationDate(educationDto.getGraduationDate());
+			education.setSchoolName(educationDto.getSchoolName());
+			education.setStartingDate(educationDto.getStartingDate());
+			education.setCurriculum_vitae(tempCv);
+			this.educationService.add(education);
+		}
+
+		for (AbilityDto abilityDto : curriculumVitae.getAbilities()) {
+			Ability ability = new Ability();
+			ability.setAbilityName(abilityDto.getAbilityName());
+			ability.setCurriculum_vitae(tempCv);
+			this.abilityService.add(ability);
+		}
+
+		for (ExperienceDto experienceDto : curriculumVitae.getExperiences()) {
+			Experience experience = new Experience();
+			experience.setBusinessName(experienceDto.getBusinessName());
+			experience.setPosition(experienceDto.getPosition());
+			experience.setQuitDate(experienceDto.getQuitDate());
+			experience.setStartingDate(experienceDto.getStartingDate());
+			experience.setCurriculum_vitae(tempCv);
+			this.experienceService.add(experience);
+		}
+
+		for (LanguageDto languageDto : curriculumVitae.getLanguages()) {
+			Language language = new Language();
+			language.setLanguage(languageDto.getLanguage());
+			language.setDegree(languageDto.getDegree());
+			language.setCurriculum_vitae(tempCv);
+			this.languageService.add(language);
+
+		}
+
+		return new SuccessResult(curriculumVitae + " ");
+	}
+
+	@Override
+	public Result update(CVUpdateDto curriculumVitae) {
+		CurriculumVitae cv = new CurriculumVitae();
+		cv.setId(curriculumVitae.getId());
+		cv.setCandidate(this.candidateService.getById(curriculumVitae.getCandidateId()).getData());
+		cv.setFirstName(curriculumVitae.getFirstName());
+		cv.setLastName(curriculumVitae.getLastName());
+		cv.setEmail(curriculumVitae.getEmail());
+		cv.setCoverLetter(curriculumVitae.getCoverLetter());
+		cv.setActive(false);
+		LocalDate now = LocalDate.now();
+		cv.setCreatedDate(now);
+		cv.setImageUrl(curriculumVitae.getImageUrl());
+		cv.setGithub(curriculumVitae.getGithub());
+		cv.setLinkedin(curriculumVitae.getLinkedin());
+		this.curriculumVitaeDao.save(cv);
+
+		for (EducationDto educationDto : curriculumVitae.getEducations()) {
+			Education education = new Education();
+			education.setGraduationDate(educationDto.getGraduationDate());
+			education.setSchoolName(educationDto.getSchoolName());
+			education.setStartingDate(educationDto.getStartingDate());
+			education.setCurriculum_vitae(cv);
+			if (this.abilityService.existsById(educationDto.getId())) {
+				education.setId(educationDto.getId());
+			}
+			this.educationService.add(education);
+		}
+
+		for (AbilityDto abilityDto : curriculumVitae.getAbilities()) {
+			Ability ability = new Ability();
+			ability.setAbilityName(abilityDto.getAbilityName());
+			ability.setCurriculum_vitae(cv);
+			if (this.abilityService.existsById(abilityDto.getId())) {
+				ability.setId(abilityDto.getId());
+			}
+			this.abilityService.add(ability);
+		}
+		for (ExperienceDto experienceDto : curriculumVitae.getExperiences()) {
+			Experience experience = new Experience();
+			experience.setBusinessName(experienceDto.getBusinessName());
+			experience.setPosition(experienceDto.getPosition());
+			experience.setQuitDate(experienceDto.getQuitDate());
+			experience.setStartingDate(experienceDto.getStartingDate());
+			experience.setCurriculum_vitae(cv);
+			if (this.experienceService.existsById(experienceDto.getId())) {
+				experience.setId(experienceDto.getId());
+			}
+			this.experienceService.add(experience);
+		}
+
+		for (LanguageDto languageDto : curriculumVitae.getLanguages()) {
+			Language language = new Language();
+			language.setLanguage(languageDto.getLanguage());
+			language.setDegree(languageDto.getDegree());
+			language.setCurriculum_vitae(cv);
+			if (this.languageService.existsById(languageDto.getId())) {
+				language.setId(languageDto.getId());
+			}
+			this.languageService.add(language);
+
+		}
+
+		return new SuccessResult(curriculumVitae + " ");
 	}
 
 	@Override
@@ -129,7 +212,14 @@ public class CurriculumVitaeManager implements CurriculumVitaeService {
 	@Override
 	public DataResult<CurriculumVitae> getById(int id) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<CurriculumVitae>(this.curriculumVitaeDao.getById(id),"Özgeçmiş listelendi");
+		return new SuccessDataResult<CurriculumVitae>(this.curriculumVitaeDao.getById(id), "Özgeçmiş listelendi");
+	}
+
+	@Override
+	public DataResult<String> addFile(MultipartFile file) {
+		Map<String, String> result = (Map<String, String>) imageService.save(file).getData();
+
+		return new SuccessDataResult<String>(result.get("url"), "image added");
 	}
 
 }

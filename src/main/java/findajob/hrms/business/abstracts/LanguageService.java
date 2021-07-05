@@ -8,5 +8,10 @@ import findajob.hrms.entities.concretes.Language;
 
 public interface LanguageService {
 	Result add(Language language);
+
+	Result delete(int id);
+
+	boolean existsById(int id);
+
 	DataResult<List<Language>> getAll();
 }

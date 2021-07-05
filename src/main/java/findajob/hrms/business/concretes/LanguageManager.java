@@ -36,4 +36,16 @@ public class LanguageManager implements LanguageService {
 		return new SuccessDataResult<List<Language>>(this.languageDao.findAll(),"Listed");
 	}
 
+	@Override
+	public Result delete(int id) {
+		this.languageDao.deleteById(id);
+		return new SuccessResult("Dil bilgisi silindi");
+	}
+
+	@Override
+	public boolean existsById(int id) {
+		// TODO Auto-generated method stub
+		return this.languageDao.existsById(id);
+	}
+
 }

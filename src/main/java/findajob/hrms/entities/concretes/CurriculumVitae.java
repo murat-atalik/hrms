@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +33,13 @@ public class CurriculumVitae {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
+	@Column(name = "first_name")
+	private String firstName;
+	@Column(name = "last_name")
+	private String lastName;
+	@Email
+	@Column(name = "email")
+	private String email;
 
 	@Column(name = "github")
 	private String github;
@@ -44,7 +52,10 @@ public class CurriculumVitae {
 
 	@Column(name = "image_url")
 	private String imageUrl;
-
+	
+	@Column(name = "active")
+	private boolean active;
+	
 	@Column(name = "created_date")
 	private LocalDate createdDate = LocalDate.now();
 

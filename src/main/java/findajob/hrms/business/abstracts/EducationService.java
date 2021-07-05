@@ -10,5 +10,7 @@ import findajob.hrms.entities.concretes.Education;
 
 public interface EducationService {
 	Result add(Education education);
+	Result delete(int id);
+	boolean existsById(int id);
 	DataResult<List<Education>> getAll();
 }

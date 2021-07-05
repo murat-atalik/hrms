@@ -1,7 +1,6 @@
 package findajob.hrms.entities.dtos.request;
-import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CVAddDto {
-	
+public class CVUpdateDto {
+	private int id;
 	private int candidateId;
 	private String firstName;
 	private String lastName;
@@ -28,6 +27,4 @@ public class CVAddDto {
 	
 	private List<AbilityDto> abilities;
 	
-
 }
-

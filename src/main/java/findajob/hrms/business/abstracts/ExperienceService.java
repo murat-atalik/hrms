@@ -8,5 +8,10 @@ import findajob.hrms.entities.concretes.Experience;
 
 public interface ExperienceService {
 	Result add(Experience experience);
+
+	Result delete(int id);
+
+	boolean existsById(int id);
+
 	DataResult<List<Experience>> getAll();
 }

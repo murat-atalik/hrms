@@ -34,5 +34,17 @@ public class ExperienceManager implements ExperienceService {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<Experience>>(this.experienceDao.findAll(),"listed");
 	}
+
+	@Override
+	public Result delete(int id) {
+		this.experienceDao.deleteById(id);
+		return new SuccessResult("Çalışma deneyimi silindi");
+	}
+
+	@Override
+	public boolean existsById(int id) {
+		// TODO Auto-generated method stub
+		return this.experienceDao.existsById(id);
+	}
 	
 }

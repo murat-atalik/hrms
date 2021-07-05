@@ -35,4 +35,16 @@ public class EducationManager implements EducationService{
 		return new SuccessDataResult<List<Education>>(this.educationDao.findAll(),"all schools listed");
 	}
 
+	@Override
+	public Result delete(int id) {
+		this.educationDao.deleteById(id);
+		return new SuccessResult("Eğitim bilgisi silindi");
+	}
+
+	@Override
+	public boolean existsById(int id) {
+		// TODO Auto-generated method stub
+		return this.educationDao.existsById(id);
+	}
+
 }

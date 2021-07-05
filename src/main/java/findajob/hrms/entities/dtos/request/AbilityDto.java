@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor 
-public class FilterDto{
-	private int value;
-	private String label;
+public class AbilityDto{
+	private int id;
+	private String abilityName;
 }
