@@ -45,7 +45,7 @@ public class EmployerManager implements EmployerService {
 
 		Employer tempEmployer = new Employer();
 
-		if (this.companyService.getByWebAdress(employer.getWebAddress()).getData() == null) {
+		if (this.companyService.getByWebAdress(employer.getWebAddress()).getData() == null && error.isSuccess()) {
 
 			Company tempCompany = new Company();
 			tempCompany.setCompanyName(employer.getCompanyName());

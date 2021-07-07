@@ -52,7 +52,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		JobAdvertisement temp = new JobAdvertisement();
 		
 		long millis = System.currentTimeMillis();
-		java.sql.Date date = new java.sql.Date(millis);
+		Date date = new Date(millis);
 		temp.setReleaseDate(date);
 		temp.setActive(jobAdvertisement.isActive());
 		temp.setApplicationDeadline(jobAdvertisement.getApplicationDeadline());
