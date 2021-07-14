@@ -32,6 +32,9 @@ public class WorkProgramsController {
 	@PostMapping("/add")
 	public Result add(@RequestBody WorkProgram workProgram) {
 		return this.workProgramService.add(workProgram);
+	}@PostMapping("/update")
+	public Result update(@RequestBody WorkProgram workProgram) {
+		return this.workProgramService.update(workProgram);
 	}
 
 	@GetMapping("/getall")

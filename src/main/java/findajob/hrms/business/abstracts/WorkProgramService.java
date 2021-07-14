@@ -9,6 +9,7 @@ import findajob.hrms.entities.concretes.WorkProgram;
 
 public interface WorkProgramService {
 	Result add(WorkProgram workProgram);
+	Result update(WorkProgram workProgram);
 	DataResult<List<WorkProgram>> getAll();
 	DataResult<WorkProgram> getById(int id);
 }

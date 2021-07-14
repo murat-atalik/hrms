@@ -58,7 +58,7 @@ public class CandidateManager implements CandidateService {
 			tempCandidate.setNationalityId(candidate.getNationalityId());
 			tempCandidate.setPassword(candidate.getPassword());
 			tempCandidate.setEmail(candidate.getEmail());
-			
+			tempCandidate.setUserType("candidate");
 			//TODO: Geçici çözüm User ile candidate arasındaki one to one kaldırıldı
 			this.candidateDao.save(tempCandidate);
 			tempCandidate.setUserId(this.userService.getByEmail(candidate.getEmail()).getData().getId());

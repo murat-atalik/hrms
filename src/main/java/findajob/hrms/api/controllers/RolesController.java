@@ -30,7 +30,10 @@ public class RolesController {
 	public Result add(@RequestBody Role role) {
 		return this.roleService.add(role);
 	}
-
+	@PostMapping("/update")
+	public Result update(@RequestBody Role role) {
+		return this.roleService.update(role);
+	}
 	@GetMapping("/getall")
 	public DataResult<List<Role>> getAll() {
 		return this.roleService.getAll();

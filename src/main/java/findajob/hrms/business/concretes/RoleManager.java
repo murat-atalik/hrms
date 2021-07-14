@@ -28,6 +28,10 @@ public class RoleManager implements RoleService {
 	public Result add(Role role) {
 		this.roleDao.save(role);
 		return new SuccessResult("Role eklendi");
+	}	@Override
+	public Result update(Role role) {
+		this.roleDao.save(role);
+		return new SuccessResult("Role güncellendi");
 	}
 
 	@Override

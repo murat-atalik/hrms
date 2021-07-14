@@ -41,6 +41,10 @@ public class User {
 	@NotNull
 	private String password;
 	
+	@Column(name = "user_type")
+	@NotBlank
+	@NotNull
+	private String userType;
 	//@JsonIgnore
 	//@OneToOne(mappedBy = "user")
 	//private Candidate candidate;

@@ -8,6 +8,10 @@ import findajob.hrms.entities.concretes.City;
 
 public interface CityService {
 	Result add(City city);
+
+	Result update(City city);
+
 	DataResult<List<City>> getAll();
+
 	DataResult<City> getById(int id);
 }

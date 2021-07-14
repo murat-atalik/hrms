@@ -31,6 +31,9 @@ public class WorkTypesController {
 	@PostMapping("/add")
 	public Result add(@RequestBody WorkType workType) {
 		return this.workTypeService.add(workType);
+	}	@PostMapping("/update")
+	public Result update(@RequestBody WorkType workType) {
+		return this.workTypeService.update(workType);
 	}
 
 	@GetMapping("/getall")

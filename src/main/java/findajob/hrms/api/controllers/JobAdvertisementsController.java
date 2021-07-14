@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +34,14 @@ public class JobAdvertisementsController {
 	@PostMapping("/add")
 	public Result add(@RequestBody JobAdvertAddDto JobAdvertisement) {
 		return this.jobAdvertisementService.add(JobAdvertisement);
-	}
+	}	
+	@DeleteMapping("/delete")
+	public Result delete(@RequestParam int id) {
+		return this.jobAdvertisementService.delete(id);
+	}	@PostMapping("/update")
+	public Result update(@RequestBody JobAdvertAddDto JobAdvertisement) {
+		return this.jobAdvertisementService.update(JobAdvertisement);
+	}	
 
 	@GetMapping("/getAll")
 	public DataResult<List<JobAdvertisement>> getAll() {
@@ -52,7 +60,7 @@ public class JobAdvertisementsController {
 		return this.jobAdvertisementService.getByEmployerId(id);
 	}
 	@PostMapping("/changeActiveStatus")
-	public DataResult<JobAdvertisement> changeActiveStatus(@RequestBody int id) {
+	public DataResult<JobAdvertisement> changeActiveStatus(@RequestParam int id) {
 		return this.jobAdvertisementService.changeActiveStatus(id);
 	}
 	@GetMapping("/getAllSystemConfirmed")
@@ -64,7 +72,7 @@ public class JobAdvertisementsController {
 		return this.jobAdvertisementService.getAllUnConfirmed();
 	}
 	@PostMapping("/changeConfirmStatus")
-	public DataResult<JobAdvertisement> changeConfirmStatus(@RequestBody int id) {
+	public DataResult<JobAdvertisement> changeConfirmStatus(@RequestParam int id) {
 		return this.jobAdvertisementService.changeConfirmStatus(id);
 	}
 	@PostMapping("/getAllFiltered")

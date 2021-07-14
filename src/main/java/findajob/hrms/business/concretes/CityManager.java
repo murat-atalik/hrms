@@ -27,7 +27,11 @@ public class CityManager implements CityService{
 		this.cityDao.save(city);
 		return new SuccessResult("added");
 	}
-
+	@Override
+	public Result update(City city) {
+		this.cityDao.save(city);
+		return new SuccessResult("added");
+	}
 	@Override
 	public DataResult<List<City>> getAll() {
 		// TODO Auto-generated method stub

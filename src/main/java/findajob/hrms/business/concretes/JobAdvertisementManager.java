@@ -31,10 +31,10 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	private JobPositionService jobPositionService;
 	private WorkProgramService workProgramService;
 	private WorkTypeService workTypeService;
-	
-		@Autowired
+
+	@Autowired
 	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao, CityService cityService,
-			EmployerService employerService, JobPositionService jobPositionService,WorkTypeService workTypeService,
+			EmployerService employerService, JobPositionService jobPositionService, WorkTypeService workTypeService,
 			WorkProgramService workProgramService) {
 		super();
 		this.jobAdvertisementDao = jobAdvertisementDao;
@@ -42,35 +42,31 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		this.employerService = employerService;
 		this.jobPositionService = jobPositionService;
 		this.workProgramService = workProgramService;
-		this.workTypeService =workTypeService;
+		this.workTypeService = workTypeService;
 	}
-
-
 
 	@Override
 	public Result add(JobAdvertAddDto jobAdvertisement) {
 		JobAdvertisement temp = new JobAdvertisement();
-		
+
 		long millis = System.currentTimeMillis();
 		Date date = new Date(millis);
-		temp.setReleaseDate(jobAdvertisement.getApplicationDeadline());
+		temp.setReleaseDate(date);
 		temp.setActive(jobAdvertisement.isActive());
 		temp.setApplicationDeadline(jobAdvertisement.getApplicationDeadline());
 		temp.setJobDescription(jobAdvertisement.getJobDescription());
 		temp.setMaxSalary(jobAdvertisement.getMaxSalary());
 		temp.setMinSalary(jobAdvertisement.getMinSalary());
 		temp.setOpenPosition(jobAdvertisement.getOpenPosition());
-		
+
 		temp.setSystemConfirmation(false);
-		
-		
-		temp.setWorkType(this.workTypeService.getById( jobAdvertisement.getWorkTypeId()).getData());	
+
+		temp.setWorkType(this.workTypeService.getById(jobAdvertisement.getWorkTypeId()).getData());
 		temp.setCity(this.cityService.getById(jobAdvertisement.getCityId()).getData());
 		temp.setEmployer(this.employerService.getById(jobAdvertisement.getEmployerId()).getData());
 		temp.setJobPosition(this.jobPositionService.getById(jobAdvertisement.getJobPositionId()).getData());
 		temp.setWorkProgram(this.workProgramService.getById(jobAdvertisement.getWorkProgramId()).getData());
-		
-		
+
 		this.jobAdvertisementDao.save(temp);
 		return new SuccessResult("Job Advertisement added  " + date);
 	}
@@ -84,14 +80,15 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	@Override
 	public DataResult<List<JobAdvertisement>> getAllSorted() {
 		Sort sort = Sort.by(Sort.Direction.ASC, "applicationDeadline");
-		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllActiveByCreatedDate(), "Sorted");
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllActiveByCreatedDate(),
+				"Sorted");
 	}
 
 	@Override
 	public DataResult<List<JobAdvertisement>> getByEmployer_CompanyId(int id) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllActiveByEmployer_CompanyId(id),
-				"Companies listed by company id");
+		return new SuccessDataResult<List<JobAdvertisement>>(
+				this.jobAdvertisementDao.getAllActiveByEmployer_CompanyId(id), "Companies listed by company id");
 	}
 
 	@Override
@@ -99,23 +96,24 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		JobAdvertisement jobAdvertisement = this.jobAdvertisementDao.getById(id);
 		if (jobAdvertisement.isActive()) {
 			jobAdvertisement.setActive(false);
-		} else jobAdvertisement.setActive(true);
-		
+		} else
+			jobAdvertisement.setActive(true);
+
 		this.jobAdvertisementDao.save(jobAdvertisement);
 		return new SuccessDataResult<JobAdvertisement>(this.jobAdvertisementDao.getById(id));
 	}
+
 	@Override
 	public DataResult<JobAdvertisement> changeConfirmStatus(int id) {
 		JobAdvertisement jobAdvertisement = this.jobAdvertisementDao.getById(id);
 		if (jobAdvertisement.isSystemConfirmation()) {
 			jobAdvertisement.setSystemConfirmation(false);
-		} else jobAdvertisement.setSystemConfirmation(true);
-		
+		} else
+			jobAdvertisement.setSystemConfirmation(true);
+
 		this.jobAdvertisementDao.save(jobAdvertisement);
 		return new SuccessDataResult<JobAdvertisement>(this.jobAdvertisementDao.getById(id));
 	}
-
-
 
 	@Override
 	public DataResult<List<JobAdvertisement>> getAllConfirmed() {
@@ -123,15 +121,11 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllSystemConfirmed());
 	}
 
-
-
 	@Override
 	public DataResult<List<JobAdvertisement>> getAllUnConfirmed() {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllSystemUnConfirmed());
 	}
-
-
 
 	@Override
 	public DataResult<List<JobAdvertisement>> getByEmployerId(int id) {
@@ -140,20 +134,49 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 				"Listed By Employer");
 	}
 
-
-
 	@Override
 	public DataResult<JobAdvertisement> getById(int id) {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<JobAdvertisement>(this.jobAdvertisementDao.getById(id));
 	}
 
-
-
 	@Override
 	public DataResult<List<JobAdvertisement>> getByIsActiveAndFilter(JobAdvertFilter jobAdFilter) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getByFilter(jobAdFilter),"Filtreleme başarılı");
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getByFilter(jobAdFilter),
+				"Filtreleme başarılı");
+	}
+
+	@Override
+	public Result delete(int id) {
+		this.jobAdvertisementDao.deleteById(id);
+		return new SuccessResult("Silindi");
+	}
+
+	@Override
+	public Result update(JobAdvertAddDto jobAdvertisement) {
+		JobAdvertisement temp = this.jobAdvertisementDao.getById(jobAdvertisement.getId());
+
+		long millis = System.currentTimeMillis();
+		Date date = new Date(millis);
+		temp.setReleaseDate(date);
+		temp.setActive(jobAdvertisement.isActive());
+		temp.setApplicationDeadline(jobAdvertisement.getApplicationDeadline());
+		temp.setJobDescription(jobAdvertisement.getJobDescription());
+		temp.setMaxSalary(jobAdvertisement.getMaxSalary());
+		temp.setMinSalary(jobAdvertisement.getMinSalary());
+		temp.setOpenPosition(jobAdvertisement.getOpenPosition());
+
+		temp.setSystemConfirmation(false);
+
+		temp.setWorkType(this.workTypeService.getById(jobAdvertisement.getWorkTypeId()).getData());
+		temp.setCity(this.cityService.getById(jobAdvertisement.getCityId()).getData());
+		temp.setEmployer(this.employerService.getById(jobAdvertisement.getEmployerId()).getData());
+		temp.setJobPosition(this.jobPositionService.getById(jobAdvertisement.getJobPositionId()).getData());
+		temp.setWorkProgram(this.workProgramService.getById(jobAdvertisement.getWorkProgramId()).getData());
+
+		this.jobAdvertisementDao.save(temp);
+		return new SuccessResult("Job Advertisement added  " + date);
 	}
 
 }

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,13 +47,14 @@ public class CurriculumVitaesController {
 	public Result update(@RequestBody CVUpdateDto curriculumVitae) {
 		return this.curriculumVitaeService.update(curriculumVitae);
 	}
-	@PostMapping(value="/addsa",consumes= {
-			MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE
-			
-	})
-	public Result addsa(@RequestPart  CVAddDto curriculumVitae, @RequestPart MultipartFile file) {
-		return this.curriculumVitaeService.addCv(curriculumVitae);
+	@DeleteMapping("/delete")
+	public Result delete(@RequestParam int id) {
+		return this.curriculumVitaeService.delete(id);
+	}	@PostMapping("/changestatus")
+	public Result changestatus(@RequestParam int id) {
+		return this.curriculumVitaeService.changestatus(id);
 	}
+	
 	@PostMapping("/addImage")
 	public Result add(@RequestBody int id, @RequestBody MultipartFile file) {
 		return this.curriculumVitaeService.addImage(id, file);
@@ -81,9 +83,12 @@ public class CurriculumVitaesController {
 	public DataResult<CurriculumVitae> getById(@RequestParam int id) {
 		return this.curriculumVitaeService.getById(id);
 	}
-	@GetMapping("/getbycandidateid")
-	public DataResult<List<CurriculumVitae>> getByCandidateId(@RequestParam int id) {
-		return this.curriculumVitaeService.getByCandidateId(id);
+	@GetMapping("/getbycandidateid-active")
+	public DataResult<CurriculumVitae> getByCandidateIdPassive(@RequestParam int id) {
+		return this.curriculumVitaeService.getByCandidateIdActive(id);
 	}
-
+	@GetMapping("/getbycandidateid-passive")
+	public DataResult<List<CurriculumVitae>> getByCandidateIdActive(@RequestParam int id) {
+		return this.curriculumVitaeService.getByCandidateIdPassive(id);
+	}
 }

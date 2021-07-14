@@ -203,11 +203,7 @@ public class CurriculumVitaeManager implements CurriculumVitaeService {
 		return new SuccessDataResult<List<CurriculumVitae>>(this.curriculumVitaeDao.findAll(sort), "listed");
 	}
 
-	@Override
-	public DataResult<List<CurriculumVitae>> getByCandidateId(int id) {
 
-		return new SuccessDataResult<List<CurriculumVitae>>(this.curriculumVitaeDao.getByCandidateId(id));
-	}
 
 	@Override
 	public DataResult<CurriculumVitae> getById(int id) {
@@ -220,6 +216,53 @@ public class CurriculumVitaeManager implements CurriculumVitaeService {
 		Map<String, String> result = (Map<String, String>) imageService.save(file).getData();
 
 		return new SuccessDataResult<String>(result.get("url"), "image added");
+	}
+
+	@Override
+	public DataResult<CurriculumVitae> getByCandidateIdActive(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<CurriculumVitae>(this.curriculumVitaeDao.getByCandidateIdActive(id));
+	}
+
+	@Override
+	public DataResult<List<CurriculumVitae>> getByCandidateIdPassive(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<CurriculumVitae>>(this.curriculumVitaeDao.getByCandidateIdPassive(id));
+	}
+
+	@Override
+	public Result delete(int id) {
+		CurriculumVitae temp = this.curriculumVitaeDao.getById(id);
+		for (Experience experience : temp.getExperiences()) {
+			this.experienceService.delete(experience.getId());
+		}
+		for (Language language : temp.getLanguages()) {
+			this.languageService.delete(language.getId());
+		}
+		for (Ability ability : temp.getAbilities()) {
+			this.abilityService.delete(ability.getId());
+		}
+		for (Education education : temp.getEducations()) {
+			this.educationService.delete(education.getId());
+		}
+		
+		this.curriculumVitaeDao.deleteById(id);
+		return new SuccessResult("Silindi");
+	}
+
+	@Override
+	public Result changestatus(int id) {
+		CurriculumVitae cv = this.curriculumVitaeDao.getById(id);
+		CurriculumVitae temp = this.curriculumVitaeDao.getByCandidateIdActive(cv.getCandidate().getId());
+		if(temp != null) {
+			temp.setActive(false);
+			this.curriculumVitaeDao.save(temp);
+		}
+		
+		cv.setActive(true);
+		this.curriculumVitaeDao.save(cv);
+		
+		return  new SuccessResult("Statü değiştirildi");
 	}
 
 }

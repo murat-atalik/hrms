@@ -19,6 +19,7 @@ import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.StaffDao;
 import findajob.hrms.entities.concretes.Staff;
 import findajob.hrms.entities.dtos.request.StaffAddDto;
+import findajob.hrms.entities.dtos.request.StaffUpdateDto;
 
 @Service
 public class StaffManager implements StaffService {
@@ -45,7 +46,7 @@ public class StaffManager implements StaffService {
 			tempStaff.setFirstName(staff.getFirstName());
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setPassword(staff.getPassword());
-
+			tempStaff.setUserType("staff");
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());
 			this.staffDao.save(tempStaff);
 			tempStaff.setUserId(this.userService.getByEmail(staff.getEmail()).getData().getId());
@@ -55,17 +56,15 @@ public class StaffManager implements StaffService {
 		return error;
 	}
 	@Override
-	public Result update(StaffAddDto staff) {
+	public Result update(StaffUpdateDto staff) {
 
 		Result error = BusinessRules.Run(this.EmailVerification(staff.getEmail()), this.EmailCheck(staff.getEmail(),staff.getId()),
-				this.PasswordCheck(staff.getPassword(), staff.getRePassword()),this.RoleCheck(staff.getRoleId()));
+				this.RoleCheck(staff.getRoleId()));
 		if (error.isSuccess()) {
 			Staff tempStaff = this.staffDao.getById(staff.getId());
-			
 			tempStaff.setEmail(staff.getEmail());
 			tempStaff.setFirstName(staff.getFirstName());
 			tempStaff.setLastName(staff.getLastName());
-			tempStaff.setPassword(staff.getPassword());
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());			
 			
 			this.staffDao.save(tempStaff);

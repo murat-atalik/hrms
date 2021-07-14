@@ -14,6 +14,7 @@ import findajob.hrms.business.abstracts.UserService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.User;
+import findajob.hrms.entities.dtos.request.LoginDto;
 
 @RestController
 @RequestMapping("api/users")
@@ -31,7 +32,10 @@ public class UsersController {
 	public Result add(@RequestBody User user) {
 		return this.userService.add(user);
 	}
-
+	@PostMapping("/login")
+	public Result login(@RequestBody LoginDto login) {
+		return this.userService.login(login);
+	}
 	@GetMapping("/getall")
 	public DataResult<List<User>> getall() {
 		return this.userService.getAll();

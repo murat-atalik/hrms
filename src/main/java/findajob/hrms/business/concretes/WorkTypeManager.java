@@ -44,4 +44,10 @@ public class WorkTypeManager implements WorkTypeService{
 		return new SuccessDataResult<WorkType>(this.workTypeDao.getOne(id),"get by id");
 	}
 
+	@Override
+	public Result update(WorkType workType) {
+		this.workTypeDao.save(workType);
+		return new SuccessResult("Güncellendi");
+	}
+
 }

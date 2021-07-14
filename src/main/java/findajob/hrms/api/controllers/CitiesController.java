@@ -32,6 +32,9 @@ public class CitiesController {
 	@PostMapping("/add")
 	public Result add(@RequestBody City city) {
 		return this.cityService.add(city);
+	}	@PostMapping("/update")
+	public Result update(@RequestBody City city) {
+		return this.cityService.update(city);
 	}
 
 	@GetMapping("/getall")	

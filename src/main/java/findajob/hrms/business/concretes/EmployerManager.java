@@ -61,7 +61,7 @@ public class EmployerManager implements EmployerService {
 		tempEmployer.setPhoneNumber(employer.getPhoneNumber());
 		tempEmployer.setSystemVerification(false);
 		tempEmployer.setUserId(0);
-
+		tempEmployer.setUserType("employer");
 		if (error.isSuccess()) {
 			this.employerDao.save(tempEmployer);
 			tempEmployer.setUserId(this.userService.getByEmail(employer.getEmail()).getData().getId());
@@ -81,7 +81,7 @@ public class EmployerManager implements EmployerService {
 	@Override
 	public DataResult<List<Employer>> getAll() {
 
-		return new SuccessDataResult<List<Employer>>(this.employerDao.findAll(), "Employer Listed");
+		return new SuccessDataResult<List<Employer>>(this.employerDao.getConfirmed(), "Employer Listed");
 	}
 
 	@Override
@@ -137,6 +137,25 @@ public class EmployerManager implements EmployerService {
 			return new SuccessResult();
 		}
 		return new ErrorResult("Password must equal");
+	}
+
+	@Override
+	public Result delete(int id) {
+		
+		if(this.employerDao.existsById(id)) {
+
+			this.employerDao.deleteById(id);
+			
+			
+			return new SuccessResult("Kullanıcı silindi");
+		}
+		return new SuccessResult("Bu bilgiler sahip kullanıcı bulunamadı");
+	}
+
+	@Override
+	public DataResult<List<Employer>> getUnConfirmed() {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<Employer>>(this.employerDao.getUnconfirmed());
 	}
 
 

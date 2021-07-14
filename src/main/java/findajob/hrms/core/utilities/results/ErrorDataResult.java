@@ -3,19 +3,19 @@ package findajob.hrms.core.utilities.results;
 public class ErrorDataResult<T> extends DataResult<T> {
 
 	public ErrorDataResult( T data, String message) {
-		super(data,true, message);
+		super(data,false, message);
 		
 	}
 	public ErrorDataResult(T data) {
-		super(data,true);
+		super(data,false);
 		
 	}
 	public ErrorDataResult( String message) {
-		super(null,true, message);
+		super(null,false, message);
 		
 	}
 	public ErrorDataResult() {
-		super(null,true);
+		super(null,false);
 		
 	}
 

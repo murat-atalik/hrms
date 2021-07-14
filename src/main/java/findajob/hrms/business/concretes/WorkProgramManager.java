@@ -42,4 +42,10 @@ public class WorkProgramManager implements WorkProgramService {
 		return new SuccessDataResult<WorkProgram>(this.workProgramDao.getOne(id));
 	}
 
+	@Override
+	public Result update(WorkProgram workProgram) {
+		this.workProgramDao.save(workProgram);
+		return new SuccessResult("Çalışma Programı Güncellendi");
+	}
+
 }

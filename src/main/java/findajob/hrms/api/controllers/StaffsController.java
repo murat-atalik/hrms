@@ -17,6 +17,7 @@ import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.CurriculumVitae;
 import findajob.hrms.entities.concretes.Staff;
 import findajob.hrms.entities.dtos.request.StaffAddDto;
+import findajob.hrms.entities.dtos.request.StaffUpdateDto;
 
 @RestController
 @RequestMapping("api/staff")
@@ -35,7 +36,7 @@ public class StaffsController {
 		return this.staffService.add(staff);
 	}
 	@PostMapping("/update")
-	public Result update(@RequestBody StaffAddDto staff) {
+	public Result update(@RequestBody StaffUpdateDto staff) {
 		return this.staffService.update(staff);
 	}
 	@GetMapping("/getall")

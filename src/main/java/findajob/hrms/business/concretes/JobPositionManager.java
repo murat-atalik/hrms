@@ -29,6 +29,11 @@ public class JobPositionManager implements JobPositionService {
 		this.jobPositionDao.save(jobPosition);
 		return new SuccessResult("Job Added");
 
+	}	@Override
+	public Result update(JobPosition jobPosition) {
+		this.jobPositionDao.save(jobPosition);
+		return new SuccessResult("İş Pozisyonu Güncellendi");
+
 	}
 
 	@Override

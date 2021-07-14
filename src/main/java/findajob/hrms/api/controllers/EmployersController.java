@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,13 +45,20 @@ public class EmployersController {
 	public DataResult<List<Employer>> getAll() {
 		return this.employerService.getAll();
 	}
+	@GetMapping("/getUnConfirmed")
+	public DataResult<List<Employer>> getUnConfirmed() {
+		return this.employerService.getUnConfirmed();
+	}
 	@GetMapping("/getbyid")
 	public DataResult<Employer> getById(@RequestParam int id) {
 		return this.employerService.getById(id);
 	}
 	@PostMapping("/changeSystemConfirmStatus")
-	public DataResult<Employer> changeConfirmStatus(@RequestBody int id) {
+	public Result changeConfirmStatus(@RequestParam int id) {
 		return this.employerService.changeConfirmStatus(id);
 	}
-
+	@DeleteMapping("/delete")
+	public Result delete(@RequestParam int id) {
+		return this.employerService.delete(id);
+	}
 }

@@ -7,7 +7,11 @@ import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.WorkType;
 
 public interface WorkTypeService {
-	Result add(WorkType typeOfWork);
+	Result add(WorkType workType);
+
+	Result update(WorkType workType);
+
 	DataResult<List<WorkType>> getAll();
+
 	DataResult<WorkType> getById(int id);
 }
