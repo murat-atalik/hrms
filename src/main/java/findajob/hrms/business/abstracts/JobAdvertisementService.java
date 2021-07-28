@@ -18,7 +18,10 @@ public interface JobAdvertisementService {
 	DataResult<List<JobAdvertisement>> getAllSorted();
 
 	DataResult<List<JobAdvertisement>> getByEmployer_CompanyId(int id);
+	DataResult<List<JobAdvertisement>> getAllUnconfirmedByEmployer_CompanyId(int id);
+	DataResult<List<JobAdvertisement>> getAllPassiveByEmployer_CompanyId(int id);
 
+	DataResult<List<JobAdvertisement>> getByEmployerIdActive(int id);
 	DataResult<List<JobAdvertisement>> getByEmployerId(int id);
 
 	DataResult<JobAdvertisement> changeActiveStatus(int id);

@@ -26,7 +26,16 @@ public interface JobAdvertisementDao extends JpaRepository<JobAdvertisement, Int
 
 	@Query("From JobAdvertisement where systemConfirmation= true and  active= true and employer.company.id=:id")
 	List<JobAdvertisement> getAllActiveByEmployer_CompanyId(int id);
-
+	
+	@Query("From JobAdvertisement where systemConfirmation= true and  active= true and employer.id=:id")
+	List<JobAdvertisement> getAllActiveByEmployerId(int id);
+	
+	@Query("From JobAdvertisement where systemConfirmation= true and  active= false and employer.id=:id")
+	List<JobAdvertisement> getAllPassiveByEmployerId(int id);
+	
+	@Query("From JobAdvertisement where systemConfirmation = false and employer.id=:id")
+	List<JobAdvertisement> getAllUnconfirmedByEmployerId(int id);
+	
 	@Query("From JobAdvertisement where systemConfirmation= true and active=true")
 	List<JobAdvertisement> getAllSystemConfirmed();
 
@@ -37,6 +46,7 @@ public interface JobAdvertisementDao extends JpaRepository<JobAdvertisement, Int
 	        +" and ((:#{#filter.jobPositionId}) IS NULL OR j.jobPosition.id IN (:#{#filter.jobPositionId}))"
 	        +" and ((:#{#filter.workProgramId}) IS NULL OR j.workProgram.id IN (:#{#filter.workProgramId}))"
 	        +" and ((:#{#filter.workTypeId}) IS NULL OR j.workType.id IN (:#{#filter.workTypeId}))"
+	        + "and j.systemConfirmation=true"
 	        +" and j.active=true")
  List<JobAdvertisement> getByFilter(@Param("filter") JobAdvertFilter jobAdFilter);
 }

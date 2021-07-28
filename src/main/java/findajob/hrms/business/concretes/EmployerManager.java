@@ -66,7 +66,7 @@ public class EmployerManager implements EmployerService {
 			this.employerDao.save(tempEmployer);
 			tempEmployer.setUserId(this.userService.getByEmail(employer.getEmail()).getData().getId());
 			this.employerDao.save(tempEmployer);
-			return new SuccessResult("Employer added/ need SystemPersonel verification");
+			return new SuccessResult("KULLANICI OLUŞTURULDU ONAY GEREKLİ");
 		}
 		return new ErrorResult(error.getMessage());
 	}
@@ -103,13 +103,24 @@ public class EmployerManager implements EmployerService {
 	}
 
 	private Result EmployerCheck(EmployerAddDto employer) {
-		String[] domainParts = employer.getEmail().split("@");
-		String domain = "www." + domainParts[1];
+		String[] emailParts = employer.getEmail().split("@");
+		
+		String[] domainParts = employer.getWebAddress().split("\\.",2);
+		StringBuilder builder = new StringBuilder();
+	
+		if(domainParts[1].equals("com")) {
+			if (emailParts[1].equals(employer.getWebAddress())) {
+				return new SuccessResult();
 
-		if (domain.equals(employer.getWebAddress())) {
-			return new SuccessResult();
 		}
-		return new ErrorResult("  email nor mathced " + domain + "+" + employer.getWebAddress());
+				
+		
+		}else {
+			if (emailParts[1].equals(domainParts[1])) {
+				return new SuccessResult();
+		}}
+		
+		return new ErrorResult("E-Posta HATALI ŞİRKET ADRESİ İLE AYNI DOMAİNE SAHİP OLMALI");
 	}
 
 	// Fake email verification

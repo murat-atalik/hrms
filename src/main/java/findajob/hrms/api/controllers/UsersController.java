@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import findajob.hrms.business.abstracts.UserService;
 import findajob.hrms.core.utilities.results.DataResult;
+import findajob.hrms.core.utilities.results.ErrorResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.User;
 import findajob.hrms.entities.dtos.request.LoginDto;
@@ -34,7 +35,9 @@ public class UsersController {
 	}
 	@PostMapping("/login")
 	public Result login(@RequestBody LoginDto login) {
+		
 		return this.userService.login(login);
+		
 	}
 	@GetMapping("/getall")
 	public DataResult<List<User>> getall() {

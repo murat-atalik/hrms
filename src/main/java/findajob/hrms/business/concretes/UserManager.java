@@ -55,7 +55,7 @@ public class UserManager implements UserService{
 	public DataResult<LoginResultDto> login(LoginDto login) {
 		LoginResultDto result= new LoginResultDto();
 		User temp=this.userDao.getByEmail(login.getEmail());
-		if(temp.getPassword().equals(login.getPassword())) {
+		if(temp!=null && temp.getPassword().equals(login.getPassword())) {
 			result.setId(temp.getId());
 			result.setUserType(temp.getUserType());
 			return new SuccessDataResult<LoginResultDto>(result);

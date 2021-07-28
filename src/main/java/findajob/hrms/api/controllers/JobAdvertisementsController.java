@@ -55,9 +55,20 @@ public class JobAdvertisementsController {
 	public DataResult<List<JobAdvertisement>> getByCompanyId(@RequestParam int id) {
 		return this.jobAdvertisementService.getByEmployer_CompanyId(id);
 	}
-	@GetMapping("/getByEmployer")
-	public DataResult<List<JobAdvertisement>> getByEmployerId(@RequestParam int id) {
-		return this.jobAdvertisementService.getByEmployerId(id);
+	@GetMapping("/getByEmployerActive")
+	public DataResult<List<JobAdvertisement>> getByEmployerIdActive(@RequestParam int id) {
+		return this.jobAdvertisementService.getByEmployerIdActive(id);
+	}@GetMapping("/getById")
+	public DataResult<JobAdvertisement> getById(@RequestParam int id) {
+		return this.jobAdvertisementService.getById(id);
+	}
+	@GetMapping("/getByEmployerPassive")
+	public DataResult<List<JobAdvertisement>> getByEmployerIPassive(@RequestParam int id) {
+		return this.jobAdvertisementService.getAllPassiveByEmployer_CompanyId(id);
+	}
+	@GetMapping("/getByEmployerUnconfirmed")
+	public DataResult<List<JobAdvertisement>> getByEmployerIdUnconfirmed(@RequestParam int id) {
+		return this.jobAdvertisementService.getAllUnconfirmedByEmployer_CompanyId(id);
 	}
 	@PostMapping("/changeActiveStatus")
 	public DataResult<JobAdvertisement> changeActiveStatus(@RequestParam int id) {

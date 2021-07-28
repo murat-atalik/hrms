@@ -132,6 +132,11 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getByEmployerId(id),
 				"Listed By Employer");
+	}@Override
+	public DataResult<List<JobAdvertisement>> getByEmployerIdActive(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllActiveByEmployerId(id),
+				"Listed By Employer");
 	}
 
 	@Override
@@ -140,6 +145,19 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		return new SuccessDataResult<JobAdvertisement>(this.jobAdvertisementDao.getById(id));
 	}
 
+	@Override
+	public DataResult<List<JobAdvertisement>> getAllUnconfirmedByEmployer_CompanyId(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllUnconfirmedByEmployerId(id),
+				"Listed By Employer");
+	}
+
+	@Override
+	public DataResult<List<JobAdvertisement>> getAllPassiveByEmployer_CompanyId(int id) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getAllPassiveByEmployerId(id),
+				"Listed By Employer");
+	}
 	@Override
 	public DataResult<List<JobAdvertisement>> getByIsActiveAndFilter(JobAdvertFilter jobAdFilter) {
 		// TODO Auto-generated method stub
@@ -178,5 +196,6 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		this.jobAdvertisementDao.save(temp);
 		return new SuccessResult("Job Advertisement added  " + date);
 	}
+
 
 }
