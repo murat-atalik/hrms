@@ -77,5 +77,9 @@ public class JobAdvertisement {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "jobAdvertisement")
-	private List<FavoriteJob> favoriteJob; 
+	private List<FavoriteJob> favoriteJob; 	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "jobAdvertisement")
+	private List<JobAdvertApplies> jobAdvertApplies; 
 }
