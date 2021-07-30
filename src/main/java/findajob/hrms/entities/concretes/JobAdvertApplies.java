@@ -34,4 +34,8 @@ public class JobAdvertApplies {
 	@ManyToOne()
 	@JoinColumn(name = "jobAdvertisement_id")
 	private JobAdvertisement jobAdvertisement;
+	@ManyToOne()
+	@JoinColumn(name = "curriculumVitae_id")
+	private CurriculumVitae curriculumVitae;
+	
 }

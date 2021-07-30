@@ -69,17 +69,21 @@ public class JobAdvertAppliesController {
 	}
 
 	@GetMapping("/getApproved")
-	DataResult<List<JobAdvertApplies>> getApproved() {
-		return this.jobAdvertAppliesService.getApproved();
+	DataResult<List<JobAdvertApplies>> getApproved(@RequestParam int id) {
+		return this.jobAdvertAppliesService.getApproved(id);
 	}
 
 	@GetMapping("/getDenied")
-	DataResult<List<JobAdvertApplies>> getDenied() {
-		return this.jobAdvertAppliesService.getDenied();
+	DataResult<List<JobAdvertApplies>> getDenied(@RequestParam int id) {
+		return this.jobAdvertAppliesService.getDenied(id);
 	}
 
 	@GetMapping("/getPending")
-	DataResult<List<JobAdvertApplies>> getPending() {
-		return this.jobAdvertAppliesService.getPending();
+	DataResult<List<JobAdvertApplies>> getPending(@RequestParam int id) {
+		return this.jobAdvertAppliesService.getPending(id);
+	}
+	@GetMapping("/checkapply")
+	DataResult<Boolean> getPending(@RequestParam int candidateId ,@RequestParam int jobAdvertId) {
+		return this.jobAdvertAppliesService.checkAplly(candidateId,jobAdvertId);
 	}
 }

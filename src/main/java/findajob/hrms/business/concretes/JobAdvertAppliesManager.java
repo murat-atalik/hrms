@@ -34,13 +34,18 @@ public class JobAdvertAppliesManager implements JobAdvertAppliesService {
 	@Override
 	public Result add(JobAdvertAppliesDto applies) {
 		JobAdvertApplies jobAdvertApplies= new JobAdvertApplies();
+		if(this.jobAdvertAppliesDao.checkAplly(applies.getCandidateId(),applies.getJobAdvertisementId()).isEmpty()) {
 		if(this.curriculumVitaeService.getByCandidateIdActive(applies.getCandidateId()).getData()!=null) {
 			jobAdvertApplies.setCandidate(this.candidateService.getById(applies.getCandidateId()).getData());
 			jobAdvertApplies.setJobAdvertisement(this.jobAdvertisementService.getById(applies.getJobAdvertisementId()).getData());
+			jobAdvertApplies.setStatus("BEKLEMEDE");
+			jobAdvertApplies.setCurriculumVitae(this.curriculumVitaeService.getByCandidateIdActive(applies.getCandidateId()).getData());
 		this.jobAdvertAppliesDao.save(jobAdvertApplies);
 			return new SuccessResult("BAŞVURU YAPILDI.");
 		}
 		return new ErrorResult("AKTİF CV BULUNMAMAKTADIR.");
+	}
+		return new ErrorResult("BİRDEN FAZLA BAŞVURU YAPILAMAZ.");
 	}
 
 	@Override
@@ -92,21 +97,26 @@ public class JobAdvertAppliesManager implements JobAdvertAppliesService {
 	}
 
 	@Override
-	public DataResult<List<JobAdvertApplies>> getApproved() {
+	public DataResult<List<JobAdvertApplies>> getApproved(int id) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<JobAdvertApplies>>(this.jobAdvertAppliesDao.getApproved());
+		return new SuccessDataResult<List<JobAdvertApplies>>(this.jobAdvertAppliesDao.getStatus("ONAYLANDI",id));
 	}
 
 	@Override
-	public DataResult<List<JobAdvertApplies>> getDenied() {
+	public DataResult<List<JobAdvertApplies>> getDenied(int id) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<JobAdvertApplies>>(this.jobAdvertAppliesDao.getDenied());
+		return new SuccessDataResult<List<JobAdvertApplies>>(this.jobAdvertAppliesDao.getStatus("REDDEDİLDİ",id));
 	}
 
 	@Override
-	public DataResult<List<JobAdvertApplies>> getPending() {
+	public DataResult<List<JobAdvertApplies>> getPending(int id) {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<JobAdvertApplies>>(this.jobAdvertAppliesDao.getPending());
+		return new SuccessDataResult<List<JobAdvertApplies>>(this.jobAdvertAppliesDao.getStatus("BEKLEMEDE",id));
+	}
+	@Override
+	public DataResult<Boolean> checkAplly(int candidateId, int jobAdvertId) {
+		// TODO Auto-generated method stub
+		return new SuccessDataResult<Boolean>(this.jobAdvertAppliesDao.checkAplly(candidateId, jobAdvertId).isEmpty());
 	}
 
 }

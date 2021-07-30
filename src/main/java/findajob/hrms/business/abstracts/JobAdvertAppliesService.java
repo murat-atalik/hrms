@@ -20,13 +20,15 @@ public interface JobAdvertAppliesService {
 
 	DataResult<JobAdvertApplies> getById(int id);
 
+	DataResult<Boolean> checkAplly(int candidateId, int jobAdvertId);
+
 	DataResult<List<JobAdvertApplies>> getByCandidateId(int id);
 
 	DataResult<List<JobAdvertApplies>> getByJobAdvertId(int id);
 
-	DataResult<List<JobAdvertApplies>> getApproved();
+	DataResult<List<JobAdvertApplies>> getApproved(int id);
 
-	DataResult<List<JobAdvertApplies>> getDenied();
+	DataResult<List<JobAdvertApplies>> getDenied(int id);
 
-	DataResult<List<JobAdvertApplies>> getPending();
+	DataResult<List<JobAdvertApplies>> getPending(int id);
 }
