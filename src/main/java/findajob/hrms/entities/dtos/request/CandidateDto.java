@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidateDto {
-	
+	private int candidateId;
 	private String email;
 	private String password;
 	private String rePassword;
@@ -20,5 +20,6 @@ public class CandidateDto {
 	private String lastName;	
 	private Date birthday;
 	private String nationalityId;
+	private String securityAnswer;
 
 }

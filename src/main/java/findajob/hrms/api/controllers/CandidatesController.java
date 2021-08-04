@@ -31,6 +31,10 @@ public class CandidatesController {
 	public Result add(@RequestBody CandidateDto candidate  ) {
 		return this.candidateService.add(candidate);
 	}
+	@PostMapping("/update")
+	public Result update(@RequestBody CandidateDto candidate  ) {
+		return this.candidateService.update(candidate);
+	}
 
 	@GetMapping("/getall")
 	public DataResult<List<Candidate>> getAll() {

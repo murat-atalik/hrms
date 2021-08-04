@@ -9,6 +9,7 @@ import findajob.hrms.entities.dtos.request.CandidateDto;
 
 public interface CandidateService {
 	Result add(CandidateDto candidate);
+	Result update(CandidateDto candidate);
 	DataResult<List<Candidate>> getAll();
 	DataResult<Candidate> getById(int id);
 }

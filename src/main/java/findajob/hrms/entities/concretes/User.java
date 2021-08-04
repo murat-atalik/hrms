@@ -41,6 +41,11 @@ public class User {
 	@NotNull
 	private String password;
 	
+	@Column(name = "security_answer")
+	@NotBlank
+	@NotNull
+	private String securityAnswer;
+	
 	@Column(name = "user_type")
 	@NotBlank
 	@NotNull

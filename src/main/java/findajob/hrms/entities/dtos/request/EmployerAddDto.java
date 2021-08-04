@@ -16,6 +16,7 @@ public class EmployerAddDto {
 		private String password;
 		private String rePassword;
 		private String phoneNumber;
+		private String securityAnswer;
 		
 		
 	}

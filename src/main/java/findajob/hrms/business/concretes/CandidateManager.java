@@ -59,16 +59,45 @@ public class CandidateManager implements CandidateService {
 			tempCandidate.setPassword(candidate.getPassword());
 			tempCandidate.setEmail(candidate.getEmail());
 			tempCandidate.setUserType("candidate");
+			tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
 			//TODO: Geçici çözüm User ile candidate arasındaki one to one kaldırıldı
 			this.candidateDao.save(tempCandidate);
 			tempCandidate.setUserId(this.userService.getByEmail(candidate.getEmail()).getData().getId());
 			this.candidateDao.save(tempCandidate);
 			
-			return new SuccessResult("JobSeeker added"+tempCandidate);
+			return new SuccessResult("İŞ ARAYAN EKLENDİ");
 		}
 		return error;
 	}
+	@Override
+	public Result update(CandidateDto candidate) {
 
+		Result error = BusinessRules.Run(findByNationalityId(candidate.getNationalityId()),
+				findCandidateEmail(candidate.getEmail(),candidate.getCandidateId()), this.PasswordCheck(candidate),
+				this.userCheckService.CheckIfRealPerson(candidate));
+		if (error.isSuccess()) {
+
+			
+			Candidate tempCandidate = this.candidateDao.getById(candidate.getCandidateId());
+
+			tempCandidate.setBirthday(candidate.getBirthday());
+			tempCandidate.setEmailVerification(true);
+			tempCandidate.setFirstName(candidate.getFirstName());
+			tempCandidate.setLastName(candidate.getLastName());
+			tempCandidate.setNationalityId(candidate.getNationalityId());
+			tempCandidate.setPassword(candidate.getPassword());
+			tempCandidate.setEmail(candidate.getEmail());
+			tempCandidate.setUserType("candidate");
+			tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
+			//TODO: Geçici çözüm User ile candidate arasındaki one to one kaldırıldı
+			this.candidateDao.save(tempCandidate);
+			tempCandidate.setUserId(this.userService.getByEmail(candidate.getEmail()).getData().getId());
+			this.candidateDao.save(tempCandidate);
+			
+			return new SuccessResult("İŞ ARAYAN EKLENDİ");
+		}
+		return error;
+	}
 	@Override
 	public DataResult<List<Candidate>> getAll() {
 		// TODO Auto-generated method stub
@@ -87,6 +116,13 @@ public class CandidateManager implements CandidateService {
 			return new ErrorResult("Job Seeker have already account");
 		}
 		return new SuccessResult();
+	}
+	private Result findCandidateEmail(String email,int id) {
+		Candidate temp = this.candidateDao.getById(id);
+		if (temp.getEmail().equals(email)) {
+			return new SuccessResult();
+		}
+		return new ErrorResult("MAİL ADRESİ UYUŞMAMAKTADIR");
 	}
 
 	// Fake email verification

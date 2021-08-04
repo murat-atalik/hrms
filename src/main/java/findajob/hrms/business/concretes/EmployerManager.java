@@ -17,6 +17,7 @@ import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.core.utilities.results.SuccessDataResult;
 import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.EmployerDao;
+import findajob.hrms.entities.concretes.Candidate;
 import findajob.hrms.entities.concretes.Company;
 import findajob.hrms.entities.concretes.Employer;
 import findajob.hrms.entities.concretes.JobAdvertisement;
@@ -62,6 +63,7 @@ public class EmployerManager implements EmployerService {
 		tempEmployer.setSystemVerification(false);
 		tempEmployer.setUserId(0);
 		tempEmployer.setUserType("employer");
+		tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
 		if (error.isSuccess()) {
 			this.employerDao.save(tempEmployer);
 			tempEmployer.setUserId(this.userService.getByEmail(employer.getEmail()).getData().getId());
@@ -73,8 +75,29 @@ public class EmployerManager implements EmployerService {
 	
 	@Override
 	public Result update(EmployerAddDto employer) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Result error = BusinessRules.Run(EmailVerification(employer.getEmail()), EmployerCheck(employer),
+				findEmployerEmail(employer.getEmail(),employer.getId()), PasswordCheck(employer.getPassword(), employer.getRePassword()));
+
+		Employer tempEmployer = new Employer();
+
+		
+		tempEmployer.setCompany(this.companyService.getByWebAdress(employer.getWebAddress()).getData());
+		tempEmployer.setEmail(employer.getEmail());
+		tempEmployer.setEmailVerification(true);
+		tempEmployer.setPassword(employer.getPassword());
+		tempEmployer.setPhoneNumber(employer.getPhoneNumber());
+		tempEmployer.setSystemVerification(true);
+		tempEmployer.setUserId(0);
+		tempEmployer.setUserType("employer");
+		tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
+		if (error.isSuccess()) {
+			this.employerDao.save(tempEmployer);
+			tempEmployer.setUserId(this.userService.getByEmail(employer.getEmail()).getData().getId());
+			this.employerDao.save(tempEmployer);
+			return new SuccessResult("KULLANICI GÜNCELLENDİ");
+		}
+		return new ErrorResult(error.getMessage());
 	}
 
 	
@@ -168,6 +191,12 @@ public class EmployerManager implements EmployerService {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<Employer>>(this.employerDao.getUnconfirmed());
 	}
-
+	private Result findEmployerEmail(String email,int id) {
+		Employer temp = this.employerDao.getById(id);
+		if (temp.getEmail().equals(email)) {
+			return new SuccessResult();
+		}
+		return new ErrorResult("MAİL ADRESİ UYUŞMAMAKTADIR");
+	}
 
 }

@@ -47,6 +47,7 @@ public class StaffManager implements StaffService {
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setPassword(staff.getPassword());
 			tempStaff.setUserType("staff");
+			tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());
 			this.staffDao.save(tempStaff);
 			tempStaff.setUserId(this.userService.getByEmail(staff.getEmail()).getData().getId());
@@ -66,7 +67,7 @@ public class StaffManager implements StaffService {
 			tempStaff.setFirstName(staff.getFirstName());
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());			
-			
+			tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
 			this.staffDao.save(tempStaff);
 			return new SuccessResult("System personel addedd");
 		}

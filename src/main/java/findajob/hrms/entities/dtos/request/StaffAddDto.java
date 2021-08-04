@@ -15,6 +15,6 @@ public class StaffAddDto {
 	private int roleId;
 	private String password;
 	private String rePassword;
-	
+	private String securityAnswer;
 	
 }

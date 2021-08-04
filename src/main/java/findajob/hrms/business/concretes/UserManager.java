@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import findajob.hrms.business.abstracts.UserService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.ErrorDataResult;
+import findajob.hrms.core.utilities.results.ErrorResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.core.utilities.results.SuccessDataResult;
 import findajob.hrms.core.utilities.results.SuccessResult;
 import findajob.hrms.dataAccess.abstracts.UserDao;
 import findajob.hrms.entities.concretes.User;
+import findajob.hrms.entities.dtos.request.ChangePasswordDto;
+import findajob.hrms.entities.dtos.request.ForgotPasswordDto;
 import findajob.hrms.entities.dtos.request.LoginDto;
 import findajob.hrms.entities.dtos.response.LoginResultDto;
 
@@ -63,6 +66,28 @@ public class UserManager implements UserService{
 		
 		return new ErrorDataResult<LoginResultDto>("Hata");
 		
+	}
+
+	@Override
+	public Result changePassword(ChangePasswordDto password) {
+		User temp = this.userDao.getOne(password.getUserId());
+		if(temp.getPassword().equals(password.getOldPassword())) {
+			temp.setPassword(password.getNewPassword());
+			this.userDao.save(temp);
+			return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
+			}
+		return new ErrorResult("ESKİ ŞİFRENİZ HATALI!");
+	}
+
+	@Override
+	public Result forgotPassword(ForgotPasswordDto password) {
+		User temp = this.userDao.getByEmail(password.getEmail());
+		if(temp.getSecurityAnswer().equals(password.getSecurityAnswer())) {
+			temp.setPassword(password.getPassword());
+			this.userDao.save(temp);
+			return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
+		}
+	return new ErrorResult("GÜVENLİK SORUSU CEVABI HATALI!");
 	}
 
 

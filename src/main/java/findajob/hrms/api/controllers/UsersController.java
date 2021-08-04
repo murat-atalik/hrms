@@ -15,6 +15,8 @@ import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.ErrorResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.User;
+import findajob.hrms.entities.dtos.request.ChangePasswordDto;
+import findajob.hrms.entities.dtos.request.ForgotPasswordDto;
 import findajob.hrms.entities.dtos.request.LoginDto;
 
 @RestController
@@ -32,6 +34,14 @@ public class UsersController {
 	@PostMapping("/add")
 	public Result add(@RequestBody User user) {
 		return this.userService.add(user);
+	}
+	@PostMapping("/forgotPassword")
+	public Result forgotPassword(@RequestBody ForgotPasswordDto password) {
+		return this.userService.forgotPassword(password);
+	}
+	@PostMapping("/changePassword")
+	public Result changePassword(@RequestBody ChangePasswordDto password) {
+		return this.userService.changePassword(password);
 	}
 	@PostMapping("/login")
 	public Result login(@RequestBody LoginDto login) {
