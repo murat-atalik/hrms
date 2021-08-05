@@ -67,7 +67,9 @@ public class StaffManager implements StaffService {
 			tempStaff.setFirstName(staff.getFirstName());
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());			
-			tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
+			if(tempStaff.getSecurityAnswer() !=null) {
+				tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
+				}
 			this.staffDao.save(tempStaff);
 			return new SuccessResult("System personel addedd");
 		}

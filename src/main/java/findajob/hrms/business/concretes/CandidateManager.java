@@ -24,6 +24,7 @@ import findajob.hrms.dataAccess.abstracts.CandidateDao;
 import findajob.hrms.entities.concretes.Candidate;
 import findajob.hrms.entities.concretes.User;
 import findajob.hrms.entities.dtos.request.CandidateDto;
+import findajob.hrms.entities.dtos.request.CandidateUpdateDto;
 
 @Service
 public class CandidateManager implements CandidateService {
@@ -70,33 +71,27 @@ public class CandidateManager implements CandidateService {
 		return error;
 	}
 	@Override
-	public Result update(CandidateDto candidate) {
+	public Result update(CandidateUpdateDto candidate) {
+		Candidate tempCandidate = this.candidateDao.getById(candidate.getCandidateId());
+		tempCandidate.setBirthday(candidate.getBirthday());
+		tempCandidate.setFirstName(candidate.getFirstName());
+		tempCandidate.setLastName(candidate.getLastName());
 
-		Result error = BusinessRules.Run(findByNationalityId(candidate.getNationalityId()),
-				findCandidateEmail(candidate.getEmail(),candidate.getCandidateId()), this.PasswordCheck(candidate),
-				this.userCheckService.CheckIfRealPerson(candidate));
-		if (error.isSuccess()) {
-
-			
-			Candidate tempCandidate = this.candidateDao.getById(candidate.getCandidateId());
-
-			tempCandidate.setBirthday(candidate.getBirthday());
-			tempCandidate.setEmailVerification(true);
-			tempCandidate.setFirstName(candidate.getFirstName());
-			tempCandidate.setLastName(candidate.getLastName());
-			tempCandidate.setNationalityId(candidate.getNationalityId());
-			tempCandidate.setPassword(candidate.getPassword());
-			tempCandidate.setEmail(candidate.getEmail());
-			tempCandidate.setUserType("candidate");
-			tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
-			//TODO: Geçici çözüm User ile candidate arasındaki one to one kaldırıldı
-			this.candidateDao.save(tempCandidate);
-			tempCandidate.setUserId(this.userService.getByEmail(candidate.getEmail()).getData().getId());
-			this.candidateDao.save(tempCandidate);
-			
-			return new SuccessResult("İŞ ARAYAN EKLENDİ");
+		if(tempCandidate.getSecurityAnswer() !=null) {
+		tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
 		}
-		return error;
+		if (tempCandidate.getEmail().equals(candidate.getEmail())) {
+			
+			this.candidateDao.save(tempCandidate);
+			
+			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
+		}
+		if(!findByEmail(candidate.getEmail()).isSuccess()) {
+			tempCandidate.setEmail(candidate.getEmail());
+			this.candidateDao.save(tempCandidate);
+			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
+			}
+		return new ErrorResult("MAİL ADRESİ KULLANIMDA");
 	}
 	@Override
 	public DataResult<List<Candidate>> getAll() {

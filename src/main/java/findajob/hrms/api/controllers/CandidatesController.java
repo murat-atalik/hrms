@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import findajob.hrms.business.abstracts.CandidateService;
@@ -15,6 +16,7 @@ import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Candidate;
 import findajob.hrms.entities.dtos.request.CandidateDto;
+import findajob.hrms.entities.dtos.request.CandidateUpdateDto;
 
 @RestController
 @RequestMapping("api/candidates")
@@ -32,7 +34,7 @@ public class CandidatesController {
 		return this.candidateService.add(candidate);
 	}
 	@PostMapping("/update")
-	public Result update(@RequestBody CandidateDto candidate  ) {
+	public Result update(@RequestBody CandidateUpdateDto candidate  ) {
 		return this.candidateService.update(candidate);
 	}
 
@@ -40,5 +42,8 @@ public class CandidatesController {
 	public DataResult<List<Candidate>> getAll() {
 		return this.candidateService.getAll();
 	}
-
+	@GetMapping("/getbyid")
+	public DataResult<Candidate> getById(@RequestParam int id) {
+		return this.candidateService.getById(id);
+	}
 }

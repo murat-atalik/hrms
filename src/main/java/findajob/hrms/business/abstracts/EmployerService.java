@@ -6,13 +6,14 @@ import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Employer;
 import findajob.hrms.entities.dtos.request.EmployerAddDto;
+import findajob.hrms.entities.dtos.request.EmployerUpdateDto;
 
 public interface EmployerService {
 	Result add(EmployerAddDto employer);
 
 	Result delete(int id);
 
-	Result update(EmployerAddDto employer);
+	Result update(EmployerUpdateDto employer);
 
 	DataResult<List<Employer>> getAll();
 

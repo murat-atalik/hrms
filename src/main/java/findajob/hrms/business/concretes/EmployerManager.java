@@ -23,6 +23,7 @@ import findajob.hrms.entities.concretes.Employer;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.concretes.User;
 import findajob.hrms.entities.dtos.request.EmployerAddDto;
+import findajob.hrms.entities.dtos.request.EmployerUpdateDto;
 
 @Service
 public class EmployerManager implements EmployerService {
@@ -72,35 +73,27 @@ public class EmployerManager implements EmployerService {
 		}
 		return new ErrorResult(error.getMessage());
 	}
-	
+
 	@Override
-	public Result update(EmployerAddDto employer) {
+	public Result update(EmployerUpdateDto employer) {
 
-		Result error = BusinessRules.Run(EmailVerification(employer.getEmail()), EmployerCheck(employer),
-				findEmployerEmail(employer.getEmail(),employer.getId()), PasswordCheck(employer.getPassword(), employer.getRePassword()));
+		Result error = BusinessRules.Run(EmailVerification(employer.getEmail()));
 
-		Employer tempEmployer = new Employer();
+		Employer tempEmployer = this.employerDao.getById(employer.getEmployerId());
 
-		
-		tempEmployer.setCompany(this.companyService.getByWebAdress(employer.getWebAddress()).getData());
 		tempEmployer.setEmail(employer.getEmail());
-		tempEmployer.setEmailVerification(true);
-		tempEmployer.setPassword(employer.getPassword());
 		tempEmployer.setPhoneNumber(employer.getPhoneNumber());
-		tempEmployer.setSystemVerification(true);
-		tempEmployer.setUserId(0);
-		tempEmployer.setUserType("employer");
-		tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
+
+		if (employer.getSecurityAnswer() != null) {
+			tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
+		}
 		if (error.isSuccess()) {
-			this.employerDao.save(tempEmployer);
-			tempEmployer.setUserId(this.userService.getByEmail(employer.getEmail()).getData().getId());
 			this.employerDao.save(tempEmployer);
 			return new SuccessResult("KULLANICI GÜNCELLENDİ");
 		}
 		return new ErrorResult(error.getMessage());
 	}
 
-	
 	@Override
 	public DataResult<List<Employer>> getAll() {
 
@@ -118,31 +111,32 @@ public class EmployerManager implements EmployerService {
 		Employer temp = this.employerDao.getOne(id);
 		if (temp.isSystemVerification()) {
 			temp.setSystemVerification(false);
-		}
-		else temp.setSystemVerification(true);
+		} else
+			temp.setSystemVerification(true);
 		this.employerDao.save(temp);
 
-		return new SuccessDataResult<Employer>(this.employerDao.getOne(id), "Status changed: "+temp.isSystemVerification());
+		return new SuccessDataResult<Employer>(this.employerDao.getOne(id),
+				"Status changed: " + temp.isSystemVerification());
 	}
 
 	private Result EmployerCheck(EmployerAddDto employer) {
 		String[] emailParts = employer.getEmail().split("@");
-		
-		String[] domainParts = employer.getWebAddress().split("\\.",2);
+
+		String[] domainParts = employer.getWebAddress().split("\\.", 2);
 		StringBuilder builder = new StringBuilder();
-	
-		if(domainParts[1].equals("com")) {
+
+		if (domainParts[1].equals("com")) {
 			if (emailParts[1].equals(employer.getWebAddress())) {
 				return new SuccessResult();
 
-		}
-				
-		
-		}else {
+			}
+
+		} else {
 			if (emailParts[1].equals(domainParts[1])) {
 				return new SuccessResult();
-		}}
-		
+			}
+		}
+
 		return new ErrorResult("E-Posta HATALI ŞİRKET ADRESİ İLE AYNI DOMAİNE SAHİP OLMALI");
 	}
 
@@ -175,12 +169,11 @@ public class EmployerManager implements EmployerService {
 
 	@Override
 	public Result delete(int id) {
-		
-		if(this.employerDao.existsById(id)) {
+
+		if (this.employerDao.existsById(id)) {
 
 			this.employerDao.deleteById(id);
-			
-			
+
 			return new SuccessResult("Kullanıcı silindi");
 		}
 		return new SuccessResult("Bu bilgiler sahip kullanıcı bulunamadı");
@@ -191,7 +184,8 @@ public class EmployerManager implements EmployerService {
 		// TODO Auto-generated method stub
 		return new SuccessDataResult<List<Employer>>(this.employerDao.getUnconfirmed());
 	}
-	private Result findEmployerEmail(String email,int id) {
+
+	private Result findEmployerEmail(String email, int id) {
 		Employer temp = this.employerDao.getById(id);
 		if (temp.getEmail().equals(email)) {
 			return new SuccessResult();

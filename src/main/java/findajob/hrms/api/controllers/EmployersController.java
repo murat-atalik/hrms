@@ -18,6 +18,7 @@ import findajob.hrms.core.utilities.results.Result;
 import findajob.hrms.entities.concretes.Employer;
 import findajob.hrms.entities.concretes.JobAdvertisement;
 import findajob.hrms.entities.dtos.request.EmployerAddDto;
+import findajob.hrms.entities.dtos.request.EmployerUpdateDto;
 
 @RestController
 @RequestMapping("api/employers")
@@ -37,7 +38,7 @@ public class EmployersController {
 		return this.employerService.add(employer);
 	}
 	@PostMapping("/update")
-	public Result update(@RequestBody EmployerAddDto employer) {
+	public Result update(@RequestBody EmployerUpdateDto employer) {
 		return this.employerService.update(employer);
 	}
 
