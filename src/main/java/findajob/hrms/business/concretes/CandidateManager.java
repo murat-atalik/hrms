@@ -77,7 +77,7 @@ public class CandidateManager implements CandidateService {
 		tempCandidate.setFirstName(candidate.getFirstName());
 		tempCandidate.setLastName(candidate.getLastName());
 
-		if(tempCandidate.getSecurityAnswer() !=null) {
+		if(!candidate.getSecurityAnswer().isEmpty()) {
 		tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
 		}
 		if (tempCandidate.getEmail().equals(candidate.getEmail())) {
@@ -86,7 +86,7 @@ public class CandidateManager implements CandidateService {
 			
 			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
 		}
-		if(!findByEmail(candidate.getEmail()).isSuccess()) {
+		if(!this.userService.existByemail(candidate.getEmail())) {
 			tempCandidate.setEmail(candidate.getEmail());
 			this.candidateDao.save(tempCandidate);
 			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
@@ -96,19 +96,19 @@ public class CandidateManager implements CandidateService {
 	@Override
 	public DataResult<List<Candidate>> getAll() {
 		// TODO Auto-generated method stub
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(), "Job seekers listed");
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(), "İş arayanlar listelendi");
 	}
 
 	private Result findByNationalityId(String nationalityId) {
 		if (this.candidateDao.existsCandidateByNationalityId(nationalityId)) {
-			return new ErrorResult("NationalityId already exists");
+			return new ErrorResult("TC KİMLİK NO KULLANIMDA");
 		}
 		return new SuccessResult();
 	}
 
 	private Result findByEmail(String email) {
-		if (this.candidateDao.existsCandidateByEmail(email)) {
-			return new ErrorResult("Job Seeker have already account");
+		if (this.userService.existByemail(email)) {
+			return new ErrorResult("MAİL HESABI KULLANIMDA");
 		}
 		return new SuccessResult();
 	}
@@ -130,14 +130,14 @@ public class CandidateManager implements CandidateService {
 		if (matcher.matches()) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Email verification fail");
+		return new ErrorResult("LÜTFEN GEÇERLİ BİR EMAİL ADRESİ GİRİN");
 	}
 
 	private Result PasswordCheck(CandidateDto candidate) {
 		if (candidate.getPassword().equals(candidate.getRePassword())) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Password & RePassword must same");
+		return new ErrorResult("ŞİFRELER UYUŞMUYOR");
 	}
 
 	@Override

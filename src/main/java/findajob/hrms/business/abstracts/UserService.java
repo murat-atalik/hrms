@@ -14,7 +14,7 @@ public interface UserService {
 	Result add(User user);
 	Result changePassword (ChangePasswordDto password);
 	Result forgotPassword(ForgotPasswordDto password);
-
+	boolean existByemail(String email);
 	Result delete(int id);
 	DataResult<List<User>> getAll();
 	DataResult<User> getByEmail(String email);

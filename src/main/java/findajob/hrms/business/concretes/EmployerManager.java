@@ -77,21 +77,28 @@ public class EmployerManager implements EmployerService {
 	@Override
 	public Result update(EmployerUpdateDto employer) {
 
-		Result error = BusinessRules.Run(EmailVerification(employer.getEmail()));
 
 		Employer tempEmployer = this.employerDao.getById(employer.getEmployerId());
 
-		tempEmployer.setEmail(employer.getEmail());
+		
 		tempEmployer.setPhoneNumber(employer.getPhoneNumber());
 
-		if (employer.getSecurityAnswer() != null) {
+
+		if (!employer.getSecurityAnswer().isEmpty()) {
 			tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
 		}
-		if (error.isSuccess()) {
+		if (tempEmployer.getEmail().equals(employer.getEmail())) {
+			
 			this.employerDao.save(tempEmployer);
-			return new SuccessResult("KULLANICI GÜNCELLENDİ");
+			
+			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
 		}
-		return new ErrorResult(error.getMessage());
+		if(!this.userService.existByemail(employer.getEmail())) {
+			tempEmployer.setEmail(employer.getEmail());
+			this.employerDao.save(tempEmployer);
+			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
+			}
+		return new ErrorResult("MAİL ADRESİ KULLANIMDA");
 	}
 
 	@Override

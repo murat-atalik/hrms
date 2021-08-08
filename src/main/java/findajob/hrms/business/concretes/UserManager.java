@@ -72,12 +72,15 @@ public class UserManager implements UserService{
 	public Result changePassword(ChangePasswordDto password) {
 		User temp = this.userDao.getOne(password.getUserId());
 		if(temp.getPassword().equals(password.getOldPassword())) {
-			if(password.getNewPassword().equals(password.getReNewPassword())) {
-			temp.setPassword(password.getNewPassword());
-			this.userDao.save(temp);
-			return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
+			if(!temp.getPassword().equals(password.getNewPassword())) {
+				if(password.getNewPassword().equals(password.getReNewPassword())) {
+					temp.setPassword(password.getNewPassword());
+					this.userDao.save(temp);
+					return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
+					}
+					return new ErrorResult("ŞİFRELER HATALI!");
 			}
-			return new ErrorResult("ŞİFRELER HATALI!");
+			return new ErrorResult("ESKİ ŞİFRENİZ İLE YENİ ŞİFRENİZ AYNI OLAMAZ!");
 			}
 		return new ErrorResult("ESKİ ŞİFRENİZ HATALI!");
 	}
@@ -94,6 +97,12 @@ public class UserManager implements UserService{
 			return new ErrorResult("ŞİFRELER HATALI!");
 		}
 	return new ErrorResult("GÜVENLİK SORUSU CEVABI HATALI!");
+	}
+
+	@Override
+	public boolean existByemail(String email) {
+		// TODO Auto-generated method stub
+		return this.userDao.existsByEmail(email);
 	}
 
 

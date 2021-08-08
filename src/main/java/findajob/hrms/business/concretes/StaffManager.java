@@ -59,19 +59,28 @@ public class StaffManager implements StaffService {
 	@Override
 	public Result update(StaffUpdateDto staff) {
 
-		Result error = BusinessRules.Run(this.EmailVerification(staff.getEmail()), this.EmailCheck(staff.getEmail(),staff.getId()),
+		Result error = BusinessRules.Run(this.EmailVerification(staff.getEmail()), 
 				this.RoleCheck(staff.getRoleId()));
 		if (error.isSuccess()) {
 			Staff tempStaff = this.staffDao.getById(staff.getId());
-			tempStaff.setEmail(staff.getEmail());
+			
 			tempStaff.setFirstName(staff.getFirstName());
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());			
-			if(tempStaff.getSecurityAnswer() !=null) {
+			if(!staff.getSecurityAnswer().isEmpty()) {
 				tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
 				}
+		if(tempStaff.getEmail().equals(staff.getEmail())) {
 			this.staffDao.save(tempStaff);
-			return new SuccessResult("System personel addedd");
+			return new SuccessResult("BİLGİLER GÜNCELLENDİ");
+		}
+	if(!this.userService.existByemail(staff.getEmail())&&!tempStaff.getEmail().equals(staff.getEmail())) {
+						tempStaff.setEmail(staff.getEmail());
+						this.staffDao.save(tempStaff);
+						return new SuccessResult("BİLGİLER GÜNCELLENDİ");
+		}
+			
+			return new ErrorResult("MAİL ADRESİ KULLANIMDA");
 		}
 		return error;
 	}
@@ -94,21 +103,12 @@ public class StaffManager implements StaffService {
 
 	private Result EmailCheck(String email) {
 
-		if (!this.staffDao.existsStaffByEmail(email)) {
+		if (!this.userService.existByemail(email)) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Invalid email");
+		return new ErrorResult("EMAİL ADRESİ KULLANIMDA");
 	}
-	private Result EmailCheck(String email,int id) {
 
-		if (!this.staffDao.existsStaffByEmail(email)) {
-			return new SuccessResult();
-		}
-		if (this.staffDao.existsStaffByEmail(email)&&this.staffDao.getById(id).getEmail().equals(email)) {
-			return new SuccessResult();
-		}
-		return new ErrorResult("Invalid email");
-	}
 
 	private Result PasswordCheck(String password, String rePassword) {
 
