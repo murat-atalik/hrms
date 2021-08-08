@@ -155,7 +155,7 @@ public class EmployerManager implements EmployerService {
 		if (matcher.matches()) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Email verification error");
+		return new ErrorResult("GEÇERSİZ MAİL");
 	}
 
 	private Result EmailCheck(String email) {
@@ -163,7 +163,7 @@ public class EmployerManager implements EmployerService {
 		if (!this.employerDao.existsEmployerByEmail(email)) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Invalid email");
+		return new ErrorResult("GEÇERSİZ MAİL");
 	}
 
 	private Result PasswordCheck(String password, String rePassword) {
@@ -171,7 +171,7 @@ public class EmployerManager implements EmployerService {
 		if (password.equals(rePassword)) {
 			return new SuccessResult();
 		}
-		return new ErrorResult("Password must equal");
+		return new ErrorResult("ŞİFRELER UYUMSUZ");
 	}
 
 	@Override

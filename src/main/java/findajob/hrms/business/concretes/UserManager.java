@@ -88,6 +88,7 @@ public class UserManager implements UserService{
 	@Override
 	public Result forgotPassword(ForgotPasswordDto password) {
 		User temp = this.userDao.getByEmail(password.getEmail());
+		if(this.userDao.existsByEmail(password.getEmail())) {
 		if(temp.getSecurityAnswer().equals(password.getSecurityAnswer())) {
 			if(password.getPassword().equals(password.getRePassword())) {
 				temp.setPassword(password.getPassword());
@@ -95,6 +96,8 @@ public class UserManager implements UserService{
 				return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
 			}
 			return new ErrorResult("ŞİFRELER HATALI!");
+		}
+		return new ErrorResult("HATALI MAİL ADRESİ!");
 		}
 	return new ErrorResult("GÜVENLİK SORUSU CEVABI HATALI!");
 	}
