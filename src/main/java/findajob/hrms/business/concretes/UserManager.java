@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import findajob.hrms.business.abstracts.BcryptService;
 import findajob.hrms.business.abstracts.UserService;
 import findajob.hrms.core.utilities.results.DataResult;
 import findajob.hrms.core.utilities.results.ErrorDataResult;
@@ -23,11 +24,11 @@ import findajob.hrms.entities.dtos.response.LoginResultDto;
 public class UserManager implements UserService{
 		
 	private UserDao userDao;
-	
+	private BcryptService bcryptService;
 	@Autowired
-	public UserManager (UserDao userDao) {
+	public UserManager (UserDao userDao,BcryptService bcryptService) {
 		this.userDao=userDao;
-	}
+		this.bcryptService=bcryptService;}
 	
 	@Override
 	public Result add(User user) {
@@ -71,10 +72,10 @@ public class UserManager implements UserService{
 	@Override
 	public Result changePassword(ChangePasswordDto password) {
 		User temp = this.userDao.getOne(password.getUserId());
-		if(temp.getPassword().equals(password.getOldPassword())) {
-			if(!temp.getPassword().equals(password.getNewPassword())) {
+		if(this.bcryptService.checkEncrypt(password.getOldPassword(), temp.getPassword())) {
+			if(!password.getOldPassword().equals(password.getNewPassword())) {
 				if(password.getNewPassword().equals(password.getReNewPassword())) {
-					temp.setPassword(password.getNewPassword());
+					temp.setPassword(this.bcryptService.encryptValue(password.getNewPassword()));
 					this.userDao.save(temp);
 					return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
 					}
@@ -89,9 +90,9 @@ public class UserManager implements UserService{
 	public Result forgotPassword(ForgotPasswordDto password) {
 		User temp = this.userDao.getByEmail(password.getEmail());
 		if(this.userDao.existsByEmail(password.getEmail())) {
-		if(temp.getSecurityAnswer().equals(password.getSecurityAnswer())) {
+		if(this.bcryptService.checkEncrypt(password.getSecurityAnswer(), temp.getSecurityAnswer())) {
 			if(password.getPassword().equals(password.getRePassword())) {
-				temp.setPassword(password.getPassword());
+				temp.setPassword(this.bcryptService.encryptValue(password.getPassword()));
 				this.userDao.save(temp);
 				return new SuccessResult("ŞİFRE BAŞARIYLA GÜNCELLENDİ");
 			}

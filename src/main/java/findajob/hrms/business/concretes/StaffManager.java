@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import findajob.hrms.business.abstracts.BcryptService;
 import findajob.hrms.business.abstracts.RoleService;
 import findajob.hrms.business.abstracts.StaffService;
 import findajob.hrms.business.abstracts.UserService;
@@ -27,12 +28,14 @@ public class StaffManager implements StaffService {
 	private StaffDao staffDao;
 	private UserService userService;
 	private RoleService roleService;
+	private BcryptService bcryptService;
 
 	@Autowired
-	public StaffManager(StaffDao staffDao, UserService userService, RoleService roleService) {
+	public StaffManager(StaffDao staffDao, UserService userService, RoleService roleService, BcryptService bcryptService) {
 		this.staffDao = staffDao;
 		this.userService = userService;
 		this.roleService = roleService;
+		this.bcryptService= bcryptService;
 	}
 
 	@Override
@@ -45,9 +48,9 @@ public class StaffManager implements StaffService {
 			tempStaff.setEmail(staff.getEmail());
 			tempStaff.setFirstName(staff.getFirstName());
 			tempStaff.setLastName(staff.getLastName());
-			tempStaff.setPassword(staff.getPassword());
+			tempStaff.setPassword(this.bcryptService.encryptValue(staff.getPassword()));
 			tempStaff.setUserType("staff");
-			tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
+			tempStaff.setSecurityAnswer(this.bcryptService.encryptValue(staff.getSecurityAnswer()));
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());
 			this.staffDao.save(tempStaff);
 			tempStaff.setUserId(this.userService.getByEmail(staff.getEmail()).getData().getId());
@@ -68,7 +71,7 @@ public class StaffManager implements StaffService {
 			tempStaff.setLastName(staff.getLastName());
 			tempStaff.setRole(this.roleService.getById(staff.getRoleId()).getData());			
 			if(!staff.getSecurityAnswer().isEmpty()) {
-				tempStaff.setSecurityAnswer(staff.getSecurityAnswer());
+				tempStaff.setSecurityAnswer(this.bcryptService.encryptValue(staff.getSecurityAnswer()));
 				}
 		if(tempStaff.getEmail().equals(staff.getEmail())) {
 			this.staffDao.save(tempStaff);

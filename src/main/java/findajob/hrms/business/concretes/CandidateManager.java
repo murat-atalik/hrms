@@ -9,6 +9,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import findajob.hrms.business.abstracts.BcryptService;
 import findajob.hrms.business.abstracts.CandidateService;
 import findajob.hrms.business.abstracts.UserService;
 import findajob.hrms.core.adapters.FakeCheck;
@@ -32,20 +33,22 @@ public class CandidateManager implements CandidateService {
 	private CandidateDao candidateDao;
 	private UserCheckService userCheckService;
 	private UserService userService;
+	private BcryptService bcryptService;
 
 	@Autowired
-	public CandidateManager(CandidateDao candidateDao, FakeCheck userCheckService, UserService userService) {
+	public CandidateManager(CandidateDao candidateDao, FakeCheck userCheckService, UserService userService, BcryptService bcryptService) {
 		this.candidateDao = candidateDao;
 		this.userCheckService = userCheckService;
 		this.userService = userService;
+		this.bcryptService =bcryptService;
 	}
 
 	// TODO: hatayı bul db ye fazladan bir user ekleniyor 
 	@Override
 	public Result add(CandidateDto candidate) {
 
-		Result error = BusinessRules.Run(findByNationalityId(candidate.getNationalityId()),
-				findByEmail(candidate.getEmail()), this.PasswordCheck(candidate),
+		Result error = BusinessRules.Run(this.findByNationalityId(candidate.getNationalityId()),
+				this.findByEmail(candidate.getEmail()), this.PasswordCheck(candidate),
 				this.userCheckService.CheckIfRealPerson(candidate));
 		if (error.isSuccess()) {
 
@@ -57,10 +60,10 @@ public class CandidateManager implements CandidateService {
 			tempCandidate.setFirstName(candidate.getFirstName());
 			tempCandidate.setLastName(candidate.getLastName());
 			tempCandidate.setNationalityId(candidate.getNationalityId());
-			tempCandidate.setPassword(candidate.getPassword());
+			tempCandidate.setPassword(this.bcryptService.encryptValue(candidate.getPassword()));
 			tempCandidate.setEmail(candidate.getEmail());
 			tempCandidate.setUserType("candidate");
-			tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
+			tempCandidate.setSecurityAnswer(this.bcryptService.encryptValue(candidate.getSecurityAnswer()));
 			//TODO: Geçici çözüm User ile candidate arasındaki one to one kaldırıldı
 			this.candidateDao.save(tempCandidate);
 			tempCandidate.setUserId(this.userService.getByEmail(candidate.getEmail()).getData().getId());
@@ -78,7 +81,7 @@ public class CandidateManager implements CandidateService {
 		tempCandidate.setLastName(candidate.getLastName());
 
 		if(!candidate.getSecurityAnswer().isEmpty()) {
-		tempCandidate.setSecurityAnswer(candidate.getSecurityAnswer());
+		tempCandidate.setSecurityAnswer(this.bcryptService.encryptValue(candidate.getSecurityAnswer()));
 		}
 		if (tempCandidate.getEmail().equals(candidate.getEmail())) {
 			

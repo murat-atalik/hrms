@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import findajob.hrms.business.abstracts.BcryptService;
 import findajob.hrms.business.abstracts.CompanyService;
 import findajob.hrms.business.abstracts.EmployerService;
 import findajob.hrms.business.abstracts.UserService;
@@ -30,12 +31,13 @@ public class EmployerManager implements EmployerService {
 	private EmployerDao employerDao;
 	private CompanyService companyService;
 	private UserService userService;
-
+	private BcryptService bcryptService;
 	@Autowired
-	public EmployerManager(EmployerDao employerDao, CompanyService companyService, UserService userService) {
+	public EmployerManager(EmployerDao employerDao, CompanyService companyService, UserService userService,BcryptService bcryptService) {
 		this.employerDao = employerDao;
 		this.companyService = companyService;
 		this.userService = userService;
+		this.bcryptService=bcryptService;
 	}
 
 	// TODO: Refactor this code block
@@ -59,12 +61,12 @@ public class EmployerManager implements EmployerService {
 		tempEmployer.setCompany(this.companyService.getByWebAdress(employer.getWebAddress()).getData());
 		tempEmployer.setEmail(employer.getEmail());
 		tempEmployer.setEmailVerification(true);
-		tempEmployer.setPassword(employer.getPassword());
+		tempEmployer.setPassword(this.bcryptService.encryptValue(employer.getPassword()));
 		tempEmployer.setPhoneNumber(employer.getPhoneNumber());
 		tempEmployer.setSystemVerification(false);
 		tempEmployer.setUserId(0);
 		tempEmployer.setUserType("employer");
-		tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
+		tempEmployer.setSecurityAnswer(this.bcryptService.encryptValue(employer.getSecurityAnswer()));
 		if (error.isSuccess()) {
 			this.employerDao.save(tempEmployer);
 			tempEmployer.setUserId(this.userService.getByEmail(employer.getEmail()).getData().getId());
@@ -85,7 +87,7 @@ public class EmployerManager implements EmployerService {
 
 
 		if (!employer.getSecurityAnswer().isEmpty()) {
-			tempEmployer.setSecurityAnswer(employer.getSecurityAnswer());
+			tempEmployer.setSecurityAnswer(this.bcryptService.encryptValue(employer.getSecurityAnswer()));
 		}
 		if (tempEmployer.getEmail().equals(employer.getEmail())) {
 			
