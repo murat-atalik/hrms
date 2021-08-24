@@ -52,18 +52,7 @@ public class UsersController {
 		return this.userService.login(login);
 		
 	}
-	@PostMapping("/checkValue")
-	public boolean checkValue(@RequestParam String value,@RequestParam String hashed ) {
-		
-		return this.bcryptService.checkEncrypt(value,hashed);
-		
-	}
-	@PostMapping("/hashpassword")
-	public String hashpassword(@RequestParam String value) {
-		
-		return this.bcryptService.encryptValue(value);
-		
-	}
+
 	@GetMapping("/getall")
 	public DataResult<List<User>> getall() {
 		return this.userService.getAll();
